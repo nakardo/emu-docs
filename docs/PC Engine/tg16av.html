@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Deathskull Laboratories! - TurboGrafx 16 Video</title>
+    <link href="../../style.css" rel="stylesheet" type="text/css"></head>
+  <body vlink="navy" link="maroon">
+    <div class="navtop">
+      <p class="list"><img height="49" src="../../images/skull.gif" width="87">
+        <a href="../../index.html"><b>Home</b></a> |
+        <a href="../../games/lists/index.html"><b>Lists</b></a> |
+        <a href="../../games/tech/index.html"><b>Deathskull Labs</b></a> |
+        <a href="../../games/museum/index.html"><b>Museum</b></a> |
+        <a href="../../links.html"><b>Links</b></a></p>
+    </div>
+    <h1>TurboGrafx 16 RGB, Composite Video, &amp; Stereo Audio Outputs</h1>
+    <p>I found this info on the
+      <a href="http://joyce.eng.yale.edu/~bt/turbo/">Turbo List Home Page</a>, specifically in the file server under
+      <a href="http://joyce.eng.yale.edu/~bt/turbo/files/pce.video.hack">How to get NTSC video and audio from a PCE/Turbo</a>. Credit for the real work here goes to Joseph LoCicero, IV. </p>
+    <p>Bigass 69-pin male connector of some sort on the back of the console. <br>
+      <img src="connectors/tg16exp.gif"></p>
+    <p>That's a damn lot of pins. I'm not going to go through and identify all of them; just the ones that matter here.
+      <dl compact>
+        <dt>1</dt>
+        <dd>Right Audio (AR) </dd>
+        <dt>2</dt>
+        <dd>GND (GG) </dd>
+        <dt>22</dt>
+        <dd>Blue (VR) </dd>
+        <dt>47</dt>
+        <dd>Green (VP) </dd>
+        <dt>48</dt>
+        <dd>Left Audio (AL) </dd>
+        <dt>67</dt>
+        <dd>GND (GG) </dd>
+        <dt>68</dt>
+        <dd>Composite Video (VZ) </dd>
+        <dt>69</dt>
+        <dd>Red (VQ) </dd></dl>
+    </p>
+    <h2>Some of JoLo's notes</h2>
+    <p>To connect the PCE or Turbo to a standard television set or VCR, use the following pin connections:
+      <dl>
+        <dt><b>AR, AL</b></dt>
+        <dd>Connect these to RCA cables, ground going to the "shield" or outer metal wrapping, and AR or AL going to the "signal" or center pin. These plug directly into your Audio In R/L on your TV or VCR. </dd>
+        <dt><b>VZ</b></dt>
+        <dd>Similarly, connect GG to the "shield" and VZ to the "signal" of an RCA cable. This connects to the Video In on your TV or VCR. For a clearer picture, connect a 0.1 uF capacitor between the two terminals on the side of the cable that connects to the PCE/Turbo. </dd>
+        <dt><b>VR/VP/VQ/VN</b></dt>
+        <dd>If you have an older RGB monitor capable of horizontal sync at NTSC frequencies (around 15 kHz), you can use it as a monitor for your PCE/Turbo. Connect VR, VP, and VQ to the blue, green, and red inputs of the monitor. Connect VN to the horizontal sync input, and VZ to the vertical sync input. If the monitor only has a single sync input, use VZ. You should have an incredibly clear, crisp picture!
+          <p>NOTE -- Most modern monitors will *NOT* sync this slowly. Monitors of the "Sony Multisync" variety of old (e.g. the "2A") are capable of syncing to these frequencies. Also, monitors marked as "Amiga Compatible" should sync to the NTSC frequency as well. </p>
+        </dd></dl>
+      <hr></p>
+    <p class="list"><i>Jay Tilton</i><br>
+      06/28/98 </p>
+  </body>
+</html>

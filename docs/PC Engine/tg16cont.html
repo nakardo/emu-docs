@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title>Deathskull Laboratories! - TurboGrafx-16 Controllers</title>
+    <link href="../../style.css" rel="stylesheet" type="text/css"></head>
+  <body vlink="navy" link="maroon">
+    <div class="navtop">
+      <p class="list"><img height="49" src="../../images/skull.gif" width="87">
+        <a href="../../index.html"><b>Home</b></a> |
+        <a href="../../games/lists/index.html"><b>Lists</b></a> |
+        <a href="../../games/tech/index.html"><b>Deathskull Labs</b></a> |
+        <a href="../../games/museum/index.html"><b>Museum</b></a> |
+        <a href="../../links.html"><b>Links</b></a></p>
+    </div>
+    <h1>TurboGrafx-16 Controller</h1>
+    <p><a name="pad"></a></p>
+    <h2>Controller Pinout</h2>
+    <p>8-pin female DIN jack at the console.<br>
+      <img src="connectors/din_8_f.gif"></p>
+    <p>
+      <ol>
+        <li>+5VDC </li>
+        <li>/North <i>or</i> /I </li>
+        <li>/East <i>or</i> /II </li>
+        <li>/South <i>or</i> /Select </li>
+        <li>/West <i>or</i> /Run </li>
+        <li>Data Select </li>
+        <li>/OE </li>
+        <li>GND </li>
+      </ol>
+    </p>
+    <p>The eight signals are fed into a 74157 (4-of-8 noninverting decoder/demultiplexer) within the pad. The 74157 splits the eight signals into two sets of four, and the Data Select line determines which set is output on pins 2 through 5. </p>
+    <p></p>
+    <p>
+      <table border="1" cellspacing="0">
+        <tr>
+          <th></th>
+          <th width="100" colspan="2">Data Select</th>
+        </tr>
+        <tr>
+          <th>Pin</th>
+          <th width="50">High</th>
+          <th width="50">Low</th>
+        </tr>
+        <tr>
+          <th width="50">2</th>
+          <td>North</td>
+          <td>I</td>
+        </tr>
+        <tr>
+          <th width="50">3</th>
+          <td>East</td>
+          <td>II</td>
+        </tr>
+        <tr>
+          <th width="50">4</th>
+          <td>South</td>
+          <td>Select</td>
+        </tr>
+        <tr>
+          <th width="50">5</th>
+          <td>West</td>
+          <td>Run</td>
+        </tr>
+      </table>
+    </p>
+    <p>Naturally, if the /OE line isn't pulled low, the controller doesn't output anything.
+      <a name="tap"></a></p>
+    <h2>TurboTap</h2>
+    <p>The TurboTap reads five controllers, one at a time. Things start when the console sends a pulse on the /OE line, which resets a counter in the tap. Controller 1 is then read as usual. The transition of the Data Select line from low to high increments the counter, and pad 2 is enabled. This keeps going with each low-to-high transition of the Data Select line enabling the next controller in line. <pre>
+                         ---                                      ---
+               /OE      |   |                                    |   |
+    (counter reset)  ---     ------------------------------------     ---
+
+
+        Data Select  ------------    --    --    --    --    ------------
+(counter increment)              |  |  |  |  |  |  |  |  |  |
+                                  --    --    --    --    --
+  Pad/data set read            1A 1B 2A 2B 3A 3B 4A 4B 5A 5B
+
+</pre></p>
+    <p>After controller 5 is read, all the tap outputs are low until the next /OE pulse. This could be how the console detects the presence of the tap, since it's pretty much impossible to smush all four directions at once. <hr></p>
+    <p class="list"><i>Jay Tilton</i><br>
+      05/01/00 </p>
+  </body>
+</html>

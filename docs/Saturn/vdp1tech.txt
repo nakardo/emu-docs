@@ -1,0 +1,597 @@
+
+ Saturn VDP1 hardware notes
+ by Charles MacDonald
+ WWW: http://cgfm2.emuviews.com
+
+ Here are some findings about how the VDP1 operates that I've discovered
+ through testing. That said, I can't guarantee that my interpretation of
+ the results are correct.
+
+ What's new:
+
+ [05/17/03]
+ - Added information about the erase/write feature.
+ - Added information about the VDP1 drawing end interrupt.
+ [05/12/03]
+ - Added information about color calculation modes
+ [05/07/03]
+ - Added information about undocumented command types
+ - Added information about the jump mode settings of CMDCTRL
+ - Added details about CMDLINK
+
+ Table of contents:
+
+ Command types
+ Jump mode and list processing
+ Scaled sprite zoom point settings
+ Color calculation modes
+ Color modes
+ Command table elements
+ Erase/write
+ Credits
+ Disclaimer
+
+ ----------------------------------------------------------------------------
+ Command types
+ ----------------------------------------------------------------------------
+
+ Bits 3-0 of the CMDCTRL word define the type of command to carry out:
+
+ 0000 - Normal sprite                   1000 - Set user clip
+ 0001 - Scaled sprite                   1001 - Set system clip
+ 0010 - Distorted sprite                1010 - Set local coordinates
+ 0011 - Distorted sprite *              1011 - Set user clip *
+
+ 0100 - Polygon draw                    1100 - Abort *
+ 0101 - Polyline draw                   1101 - Abort *
+ 0110 - Line draw                       1110 - Abort *
+ 0111 - Polyline draw *                 1111 - Abort *
+
+ Commands marked with '*' are undocumented. Some appear to be aliases of
+ other commands, but it's possible they function differently.
+
+ The abort command makes the VDP stop rendering. CEF of EDSR will be set to
+ zero because the list end bit is never fetched. LOPR and COPR will point to
+ the address of the command table with the abort command. No drawing end
+ interrupt is generated.
+
+ ----------------------------------------------------------------------------
+ Jump mode and list processing
+ ----------------------------------------------------------------------------
+
+ Command tables are stored in VDP1 VRAM, starting from address zero onwards.
+ When the plot trigger is set, the VDP1 goes through the list of command
+ tables one at a time. It checks bits 15-12 to see how it should handle the
+ current command and what to do next.
+
+ If bit 15 is set, the VDP ignores the current command stored in the command
+ table and stops rendering. It will set CEF of EDSR to show that the
+ end-of-list bit has been fetched and drawing terminated normally, and also
+ attempt to trigger the drawing end interrupt which the SCU can mask out.
+
+ However, in the following situations CEF will not be set and no interrupt
+ is generated:
+
+ - An Abort command type is found.
+
+ - The VDP1 runs out of time to render before the end of list bit has been
+   found. (e.g. when drawing too many objects or a really big sprite)
+
+ - The ENDR register is written to, which stops rendering prematurely.
+
+ If bit 14 is set, the VDP ignores the current command and examines the jump
+ mode field (bits 13-12) to determine where the next command table is at. If
+ bit 14 is cleared, it processes the command first (e.g. draws a sprite), and
+ then looks at the jump mode.
+
+ There are four possible jump mode settings:
+
+ D13 D12    Mode    Description
+
+  0   0     NEXT    The VDP1 will advance to the next command table stored
+                    after the current one and process it.
+
+  0   1     JUMP    The VDP1 will process the command table who's address is
+                    stored in the CMDLINK word.
+
+  1   0     CALL    The VDP1 pushes the address of the next command table
+                    stored after the current one to a single-entry stack, and
+                    then processes the command table who's address is stored
+                    in the CMDLINK word.
+
+  1   1     RETURN  The VDP pops a previously pushed address off the stack and
+                    processes the command table at that address.
+
+ The VDP1 remembers when CALL is used, and will prevent any subsequent CALLs
+ from overwriting the originally pushed return address.
+
+ For example, in a sequence of CALL/CALL/CALL/RETURN, the address popped off
+ the stack is for the command table after the first CALL, not the third one.
+
+ The VDP1 will treat RETURN as NEXT under the following circumstances:
+
+ - You have not used CALL previously.
+
+ - You have already returned from a CALL and are trying to RETURN again.
+
+ It is possible to create an infinite loop using the jump modes, for instance
+ where a command table jumps to itself. If this happens, the VDP will continue
+ to process the same command repeatedly until the drawing period is over.
+ Because the end-of-list bit was never read, CEF is set to 0.
+
+ ----------------------------------------------------------------------------
+ Scaled sprite zoom point settings
+ ----------------------------------------------------------------------------
+
+ The 4-bit zoom point field in the CMDCTRL word specifies the origin point
+ within a sprite where zooming takes place, and which sets of coordinates
+ determine the zoomed width/height.
+
+ A sprite appears as a rectangle with the following points:
+
+    Left    Center   Right
+    +------------------+
+    |E        F       G|        Top
+    |H        I       J|        Center
+    |K        L       O|        Bottom
+    +------------------+
+
+ The point names are arbitrary, I made them up for illustrative purposes.
+
+ CMDXA/CMDYA pick a screen location to draw a sprite. The zoom point says
+ which one of the above nine points CMDXA/CMDYA reference:
+
+ 0,1,2,3 - CMDXA/CMDYA reference the top (left/left/center/right) points.
+ 4,5,6,7 - CMDXA/CMDYA reference the top (left/left/center/right) points.
+ 8,9,A,B - CMDXA/CMDYA reference the center (left/left/center/right) points.
+ C,D,E,F - CMDXA/CMDYA reference the bottom (left/left/center/right) points.
+
+ As you can see bits 0,1 of the zoom point pick the point within a row, and
+ bits 3,2 select the row.
+
+ In addition, the zoom point says which coordinate pair (CMDXB/CMDYB or
+ CMDXC/CMDYC, or both partially) define the width and height:
+
+ CMDYC is the height for 0,1,2,3
+ CMDYB is the height for 4,5,6,7,8,9,A,B,C,D,E,F
+ CMDXC is the width for 0,4,8,C
+ CMDXB is the width for 1,2,3,5,6,7,9,A,B,D,E,F
+
+ Sega only documents the zoom points which use CMDXB/CMDYB or CMDXC/CMDYC
+ exclusively, not the ones that use a mixture of both. Also note that
+ some settings (e.g. 0 and 5) function identically but just use a different
+ coordinate pair.
+
+ ----------------------------------------------------------------------------
+ Color calculation modes
+ ----------------------------------------------------------------------------
+
+ When the VDP1 is rendering a sprite or primitive, it can apply effects such
+ as Gouraud shading, partial transparency, etc. Sega refers to this as
+ 'color calculation'. Bits 2-0 of CMDPMOD pick the color calculation type:
+
+ D2 D1 D0   Type
+  0  0  0   Replace 
+  0  0  1   Shadow
+  0  1  0   Half-luminance
+  0  1  1   Half-transparency
+  1  0  0   Gouraud + Replace
+  1  0  1   Invalid
+  1  1  0   Gouraud + Half-luminance
+  1  1  1   Gouraud + Half-transparency
+
+ Replace
+
+ The object is rendered to the framebuffer normally.
+
+ Shadow
+
+ For each pixel to be rendered, the VDP1 reads the framebuffer to retrieve
+ the underlying pixel that will be overwritten. If bit 15 of this word is
+ set, it is assumed to be an RGB pixel. The RGB values are divided in half
+ and written back to the framebuffer. If bit 15 is cleared, it is assumed
+ to be a palette index and is not modified, in this case nothing is written
+ back to the framebuffer and processing continues with the next pixel.
+
+ For lines, polylines, and polygons, every pixel of the shape being drawn
+ is affected by this mode.
+
+ For all sprite types, only opaque pixels are affected. Transparent pixels
+ or pixels not shown due to end codes are ignored as usual, though this is
+ subject to the ECD and SPD bits in CMDPMOD.
+
+ Half-luminance
+
+ Each pixel is treated as RGB data. The RGB values are divided in half and
+ written to the framebuffer.
+
+ Half-transparency
+
+ For each pixel to be rendered, the VDP1 reads the framebuffer to retrieve
+ the underlying pixel that will be overwritten. If bit 15 of this word is
+ set, it is assumed to be an RGB pixel. The RGB values of the framebuffer
+ pixel and source pixel are divided in half and added together, then written
+ back to the framebuffer. If bit 15 is cleared, it is assumed to be a palette
+ index. In this case the result is the same as Replace, meaning the
+ underlying pixel is overwritten.
+
+ For lines, polylines, and polygons, every pixel of the shape being drawn
+ is affected by this mode.
+
+ For all sprite types, only opaque pixels are affected. Transparent pixels
+ or pixels not shown due to end codes are ignored as usual, though this is
+ subject to the ECD and SPD bits in CMDPMOD.
+
+ Gouraud + Replace
+
+ The object being drawn has Gouraud shading applied, and is written to the
+ framebuffer.
+
+ Invalid
+
+ Logically, this mode corresponds to what should be Gouraud + Shadow. It
+ reads the underlying framebuffer pixels for each pixel rendered, and takes
+ a little extra time just like the Gouraud shading modes do. However, it
+ always writes zero to the framebuffer, and does not examine bit 15 of the
+ framebuffer data.
+
+ For lines, polylines, and polygons, every pixel of the shape being drawn
+ is affected by this mode.
+
+ For all sprite types, only opaque pixels are affected. Transparent pixels
+ or pixels not shown due to end codes are ignored as usual, though this is
+ subject to the ECD and SPD bits in CMDPMOD.
+
+ Gouraud + Half-luminance
+
+ The object being drawn has Gouraud shading applied. The resulting pixel has
+ it's RGB values divided in half, and is written to the framebuffer.
+
+ Gouraud + Half-transparency
+
+ For each pixel to be rendered, the VDP1 reads the framebuffer to retrieve
+ the underlying pixel that will be overwritten. If bit 15 of this word is
+ set, it is assumed to be an RGB pixel. The RGB values of the framebuffer
+ pixel and source pixel are divided in half and added together, Gouraud
+ shading is applied, and the result is then written back to the framebuffer.
+ If bit 15 is cleared, it is assumed to be a palette index. In this case,
+ the result is the same as Gouraud + Replace, meaning the underlying pixel
+ is overwritten.
+
+ For lines, polylines, and polygons, every pixel of the shape being drawn
+ is affected by this mode.
+
+ For all sprite types, only opaque pixels are affected. Transparent pixels
+ or pixels not shown due to end codes are ignored as usual, though this is
+ subject to the ECD and SPD bits in CMDPMOD.
+
+ Timing
+
+ The Replace, Gouraud, and Half-luminance modes all take the same amount
+ of time. Gouraud takes slightly more, but only by a few cycles - this is
+ most likely due to the shading table being read, and not from any
+ per-pixel processing which would have a larger impact on timing.
+
+ The Shadow, Invalid, and Half-transparency modes all take the same amount
+ of time. They apparently read framebuffer data even for pixels where the
+ source data is transparent. The only way you can cut down on excessive
+ framebuffer reads when there are large transparent areas is to use end codes.
+
+ The mesh feature does not affect timing at all. You'd think rendering would
+ be faster due to every other pixel being skipped, but there is no change
+ in how fast an object is rendered with mesh processing turned on or off.
+
+ Other details
+
+ The Gouraud, half-luminance, and half-transparency modes are intended to be
+ used where the source data is in RGB format, meaning lines, polylines, or
+ polygons that specify an RGB color in the CMDCOLR word, or sprites using
+ color mode 1 with RGB codes in the lookup table, or color mode 5.
+
+ If you use palette data instead, the palette index will be come mangled as
+ the VDP1 will still treat the data as RGB values. But this can be useful
+ in a limited way if you set up the palette to map meaningful colors to the
+ resulting pixel data. Think of the VDP1 has being 'hard-wired' in performing
+ RGB processing for some of the color calculation modes.
+
+ For Shadow and Half-transparent processing, the VDP will re-draw pixels
+ to fill in gaps when the vertices of a sprite or primitive are positioned
+ in certain ways. This causes the shadow or transparency effect to be
+ applied twice.
+
+ It seems that this would significantly reduce the usefulness of shadow or
+ transparency processing on polygons/distorted sprites, and is probably why
+ so few Saturn games use transparency, instead faking the effect by using
+ the mesh feature.
+
+ ----------------------------------------------------------------------------
+ Color modes
+ ----------------------------------------------------------------------------
+
+ The VDP1 supports several different types of texture map data for sprites.
+ This is mainly to give flexibility in palette selection and the amount of
+ VRAM used for texture map storage.
+
+ Note that the color mode has no effect on lines/polylines/polygons. Sega
+ advises setting the color mode to zero.
+
+ There are eight color modes, but only six are of any real use:
+
+ 0 - 4-bit texture, 16 colors, color bank
+ 1 - 4-bit texture, 16 colors, lookup table
+ 2 - 8-bit texture, 64 colors, color bank
+ 3 - 8-bit texture, 128 colors, color bank
+ 4 - 8-bit texture, 256 colors, color bank
+ 5 - 16-bit texture, 32K colors, RGB
+ 6 - Invalid
+ 7 - Invalid
+
+ The framebuffer is scanned by the VDP2, which controls how the contents
+ are displayed. This brings up two important issues:
+
+ 1. The VDP2 seems to always handle a framebuffer word of $0000 as being
+    transparent. This means that the underlying VDP2 background layers are
+    visible through zero-value pixels.
+
+    For example, if you draw a scaled sprite with the transparent pixel
+    disable bit set, and it uses palette 0, then zero value pixels will
+    not show the color from entry 0 of palette 0. Instead, you'll get
+    whatever the VDP2 has been set up to show, such as the back color
+    screen.
+
+    I haven't checked, but there may be a way to disable this feature.
+    The VDP2 layers have a transparent pixel disable bit, and perhaps
+    the sprite layer does too. (this would be handled on the VDP2 side)
+
+ 2. The VDP2 controls how the framebuffer words should be used. Normally
+    it looks at bit 15 to determine how the data is formatted. If bit 15
+    is cleared, the remaining bits are an index into CRAM to show a color.
+    If bit 15 is set, the remaining bits are a 5:5:5 BGR color:
+
+    MSB          LSB
+    0????ccccccccccc    Palette entry (?= ignored, c= CRAM index)
+    1bbbbbgggggrrrrr    RGB color (r,g,b = Red, Green, Blue components)
+
+    Note that in a CRAM color mode with less colors (modes 1,2,3) that the
+    index into CRAM would only be 10 bits and not 11. The high-order bits
+    are simply ignored by the VDP2 as shown.
+
+    The VDP can override this feature through the SPCLMD bit of SPCTL, which
+    can force it to ignore bit 15 and treat all pixels as being palette
+    indicies instead of RGB values.
+
+    Having pixel data formatted as an RGB value is really only intended for
+    modes 1 and 5 (color bank and RGB). If you set bit 15 of CMDCOLR for
+    the other modes (0,2,3,4) then the texture data supplies values for
+    the red and green elements depending on the pixel size, and the rest
+    of the bits come from CMDCOLR. For example:
+
+    MSB          LSB
+    1bbbbbgggggrrrrr    Format of RGB word
+    ccccccccccccdddd    Mode 0 (c= CMDCOLR bits, d= Texture map bits)
+    ccccccccccdddddd    Mode 2 (c= CMDCOLR bits, d= Texture map bits)
+    cccccccccddddddd    Mode 3 (c= CMDCOLR bits, d= Texture map bits)
+    ccccccccdddddddd    Mode 4 (c= CMDCOLR bits, d= Texture map bits)
+
+    So you can draw sprites like this, but it's not very useful due to
+    the limited way in which colors are selected.
+
+ Here is a list of the various color modes:
+
+ 0 - 4-bit texture, 16 colors, color bank
+
+     A 16-bit value is made from bits 15-4 of the CMDCOLR word and bits 3-0
+     of the texture map data. Note that bits 3-0 of CMDCOLR are replaced
+     with the texture map data.
+
+ 1 - 4-bit texture, 16 colors, lookup table
+
+     The texture map data is used as an index into a 16-word table stored
+     in VRAM. You can mix palette indicies and RGB codes within the same
+     table.
+
+     The CMDCOLR word holds the address of the lookup table / 8.
+     The VDP1 will ignore bits 1,0 of CMDCOLR, so the table always has to
+     start on a 32-byte boundary.
+
+ 2 - 8-bit texture, 64 colors, color bank
+
+     A 16-bit value is made from bits 15-6 of the CMDCOLR word and bits 5-0
+     of the texture map data. Note that bits 5-0 of CMDCOLR are replaced
+     with the texture map data.
+
+ 3 - 8-bit texture, 128 colors, color bank
+
+     A 16-bit value is made from bits 15-7 of the CMDCOLR word and bits 6-0
+     of the texture map data. Note that bits 6-0 of CMDCOLR are replaced
+     with the texture map data.
+
+ 4 - 8-bit texture, 256 colors, color bank
+
+     A 16-bit value is made from bits 15-8 of the CMDCOLR word and bits 7-0
+     of the texture map data. Note that bits 7-0 of CMDCOLR are replaced
+     with the texture map data.
+
+     %00000000 signifies a transparent pixel if enabled.
+     $11111111 signifies an end code if enabled.
+
+ 5 - 16-bit texture, 32K colors, RGB
+
+     The texture map data is drawn directly to the framebuffer.
+
+     Trasparent pixel disable turned off =
+
+     $0000-$7FFE : VDP doesn't draw anything to the framebuffer (transparent)
+           $7FFF : As above, and functions as an end code if the end code
+                   disable bit is turned off.
+     $8000-$FFFF : RGB values from black to white.
+
+     Trasparent pixel disable turned on =
+
+     $0000-$7FFE : Value is written to the framebuffer (e.g. palette index)
+           $7FFF : Same as above, and functions as an end code if the
+                   end code disable bit is turned off.
+     $8000-$FFFF : RGB values from black to white.
+
+ 6 - Invalid
+ 7 - Invalid
+
+     Both of these color modes function identically. Word zero from VRAM
+     is written to each pixel location in the framebuffer. The CMDCOLR and
+     CMDSRCA have no effect on the color or source address, which is always
+     fixed at VRAM address zero.
+
+     I do not know if the VDP will check the value written to observe
+     transparency or end code detection. I haven't attempted to use it as
+     an RGB code as setting bit 15 would prevent the object from being
+     drawn. I've only tried using it as a CRAM index, which seems to work
+     as expected.
+
+ ----------------------------------------------------------------------------
+ Command table elements
+ ----------------------------------------------------------------------------
+
+ CMDLINK
+ ~~~~~~~
+ When using the JUMP or CALL jump modes, CMDLINK holds the address of the
+ next command table to process / 8. The VDP1 ignores bits 1,0 of CMDLINK
+ which are assumed to be zero, meaning command tables must start on 32-byte
+ boundaries.
+
+ CMDSRCA
+ ~~~~~~~
+ The VDP1 manual advises that texture map data in VRAM should always start
+ on 32-byte boundaries, and therefore bits 1,0 of CMDSRCA should be set to
+ zero.
+
+ However, it doesn't appear this this is a real restriction of the hardware.
+ CMDSRCA specifies the start address of the texture map in units of 8 bytes,
+ and showing sprites at offsets of 8, 16, or 24 pixels doesn't result in any
+ unusual behavior.
+
+ CMDSIZE
+ ~~~~~~~
+ If the width in CMDSIZE is set to zero, the first pixel in the texture map
+ is shown for every pixel of every line.
+
+ If the height in CMDSIZE is set to zero, it works the same as a height of
+ one. (e.g. the first line of the texture map is shown for all lines of
+ the sprite)
+
+ The VDP1 manual says both settings of zero are prohibited.
+
+ Coordinates (CMDXA through CMDYD)
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Coordinate values have the following layout:
+
+ MSB          LSB
+ ???svnnnnnnnnnnn
+
+ ? = Value is ignored
+ s = Sign bit
+ v = Distorted coordinates
+
+ This divides up the available ranges like so:
+
+ $0000-$07FF : Positive coordinates
+ $0800-$0FFF : Positive coordinates (distorted)
+ $1000-$17FF : Negative coordinates (distorted)
+ $1800-$1FFF : Negative coordinates
+
+ I tested this by controlling the lower-left point of a scaled sprite using
+ a zoom point of zero. Moving this point around so that the X/Y values
+ were within $07FF scales the sprite positively. Moving the point around so
+ that the X/Y values were within $1800-$1FFF scales the sprite negatively.
+
+ When ranges of $0800-0FFF or $1000-$17FF are used, the VDP1 doesn't read
+ the texture map correctly and heavily distorts the image. Too many pixels
+ are skipped which shrinks parts (skipping rows/columns) and in other places
+ no pixels are read so the same color is copied across multiple rows/columns.
+
+ I think normally people would use values of $0000-$07FF and $F800-$FFFF
+ when programming (e.g. -2047 to 2048, the regular range of positive/negative
+ values) so the invalid ranges would be hard to reach. And the sprite wasn't
+ even visible until getting close to the edge of the ranges, such as
+ $0E00-$0FFF and $1000-$11FF, so it would probably appear invisible most of
+ the time.
+
+ ----------------------------------------------------------------------------
+ Erase/write
+ ----------------------------------------------------------------------------
+
+ The VDP1 has a high-speed memory fill feature used to clear out the
+ framebuffer prior to rendering called erase/write.
+
+ I've only tested the default framebuffer configuration (512x256, 16-bit, no
+ rotation) with a non-interlaced display and can't comment on how erase/write
+ works with other settings.
+
+ EWLR and EWRR define the upper left and lower right points, respectively,
+ of a rectangle within the framebuffer to be erased. They both have the
+ following layout:
+
+ MSB          LSB
+ xxxxxxxyyyyyyyyy : EWLR and EWRR
+
+ x = X coordinate ($00-$7F)
+ y = Y coordinate ($000-$1FF)
+
+ EWDR holds a 16-bit value which is written to the framebuffer. This can
+ be a palette index or RGB code. Normally this would be zero, but you can
+ use it to fill the framebuffer with a particular color.
+
+ The X coordinate is in units of eight pixels, while the Y coordinate is
+ in units of single lines.
+
+ If both X coordinates are the same, the VDP1 will fill a single pixel for
+ each line within the Y coordinates.
+
+ If both Y coordinates are the same, the VDP1 will flil a single line for
+ each pixel within the X coordinates.
+
+ When the EWLR X coordinate is bigger then or equal to the EWRR X coordinate,
+ then a single dot is written at the X position indicated by EWLR.
+
+ When the EWLR Y coordinate is bigger than or equal to the EWRR Y coordinate,
+ then a single line is written at the Y position indicated by EWLR.
+
+ Even though the framebuffer is 512x256 in it's default configuration, the
+ VDP1 limits the area you can erase, regardless of the rectangle size:
+
+ - For a 224 or 240 line display, you can clear 224 or 240 lines.
+
+ - For a 320 or 352 pixel display, you can clear 400 or 428 pixels.
+   Note that 428 is not a multiple of eight, only the first four pixels
+   of the last eight pixel group have the erase/write data written to them.
+
+ For example, a 352x240 display would have a 428x240 pixel area erased if
+ EWLR = $0000 and EWRR = $FFFF (which logically corresponds to an erase
+ area from 0,0 to 1023,511).
+
+ It also seems that when the erase rectangle is bigger than the clipping
+ rectangle the VDP1 defines, it doesn't do any extra work and so the
+ erase/write sequence takes the same amount of time.
+
+ ----------------------------------------------------------------------------
+ Credits
+ ----------------------------------------------------------------------------
+
+ - Chris MacDonald for testing my software
+ - Bart Trzynadlowski for the startup script and VDP2 setup code
+ - Stefano for help getting the sprites working and testing ideas.
+
+ ----------------------------------------------------------------------------
+ Disclaimer
+ ----------------------------------------------------------------------------
+
+ If you use any information from this document, please credit me
+ (Charles MacDonald) and optionally provide a link to my webpage
+ (http://cgfm2.emuviews.com/) so interested parties can access it.
+
+ The credit text should be present in the accompanying documentation of
+ whatever project which used the information, or even in the program
+ itself (e.g. an about box)
+
+ Regarding distribution, you cannot put this document on another
+ website, nor link directly to it.
+

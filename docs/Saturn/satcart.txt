@@ -1,0 +1,157 @@
+
+ Sega Saturn Cartridge Information
+ by Charles MacDonald
+ WWW: http://cgfm2.emuviews.com
+
+ Overview:
+
+ Here is a preliminary description of the Sega Saturn cartridge connector.
+ It is quite different from what's used in the ST-V system.
+
+ I put this together by tracing out the connections in a King of Fighters '95
+ and PAR cartridge, so some of the information may be specific to them.
+
+ Pin assignments:
+
+ Components side (A: 36 pins, key, B: 31 pins)
+
+ A01 - VCC
+ A02 - VCC
+ A03 -
+ A04 -
+ A05 -
+ A06 -
+ A07 - ??? (KOF: Tied to pin A08)
+ A08 - GND
+ A09 -
+ A10 -
+ A11 -
+ A12 -
+ A13 - GND
+ A14 -
+ A15 -
+ A16 -
+ A17 -
+ A18 - GND
+ A19 -
+ A20 -
+ A21 -
+ A22 -
+ A23 - GND
+ A24 -
+ A25 -
+ A26 -
+ A27 - VCC
+ A28 - 
+ A29 - GND
+ A30 -
+ A31 - PAR: PAL16V8 pin 8 
+ A32 - PAR: PAL16V8 pin 11
+ A33 - CPU A19 / PAR: PAL16V8 pin 7
+ A34 - CPU A17
+ A35 - CPU A15
+ A36 - GND
+
+ B01 - CPU A13
+ B02 - CPU A6
+ B03 - CPU A5
+ B04 - CPU A4
+ B05 - GND
+ B06 - CPU A3
+ B07 - CPU A2
+ B08 - CPU A1
+ B09 -
+ B10 - GND
+ B11 - KOF: ROM /OE, PAR: 22V10 pin 3
+ B12 - PAR: 16V8 pin 12
+ B13 - PAR: 16V8 pin 1
+ B14 - PAR: 22V10 pin 6
+ B15 - PAR: 22V10 pin 7
+ B16 -
+ B17 -
+ B18 - GND
+ B19 - CPU D7
+ B20 - CPU D6
+ B21 - CPU D5
+ B22 - CPU D4
+ B23 - GND
+ B24 - CPU D15
+ B25 - CPU D14
+ B26 - CPU D13
+ B27 - CPU D12
+ B28 - GND
+ B29 - GND
+ B30 -
+ B31 - VCC
+
+ Solder side (D: 31 pins, key, C: 36 pins)
+
+ C01 - VCC
+ C02 - VCC
+ C03 -
+ C04 -
+ C05 -
+ C06 -
+ C07 -         
+ C08 - GND
+ C09 -
+ C10 -
+ C11 -
+ C12 -         
+ C13 - GND
+ C14 -
+ C15 -
+ C16 -
+ C17 -         
+ C18 - GND
+ C19 -
+ C20 -
+ C21 -
+ C22 -        
+ C23 - GND
+ C24 -
+ C25 -
+ C26 -
+ C27 - VCC
+ C28 -
+ C29 - GND
+ C30 - GND
+ C31 - PAR: 16V8 pin 5
+ C32 - PAR: 16V8 pin 2
+ C33 - PAR: 16V8 pin 6
+ C34 - CPU A18
+ C35 - CPU A16
+ C36 - GND
+
+ D01 - CPU A14
+ D02 - CPU A11
+ D03 - CPU A12
+ D04 - CPU A7
+ D05 - GND
+ D06 - CPU A8
+ D07 - CPU A10
+ D08 - CPU A9
+ D09 - CPU A0
+ D10 - GND
+ D11 - KOF: ROM /CE, PAR: 22V10 pin 2
+ D12 -
+ D13 - PAR: Flash memory /WE
+ D14 -
+ D15 -
+ D16 - PAR: 22V10 pin 10
+ D17 -
+ D18 - GND
+ D19 - CPU D0
+ D20 - CPU D1
+ D21 - CPU D2
+ D22 - CPU D3
+ D23 - GND
+ D24 - CPU D8
+ D25 - CPU D9
+ D26 - CPU D10
+ D27 - CPU D11
+ D28 - GND
+ D29 - GND
+ D30 -
+ D31 - VCC
+

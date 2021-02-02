@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <title>Deathskull Laboratories! - Atari 5200 Controllers</title>
+    <link href="../../style.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <div class="navtop">
+      <p class="list"><img height="49" src="../../images/skull.gif" width="87">
+        <a href="../../index.html"><b>Home</b></a> |
+        <a href="../../games/lists/index.html"><b>Lists</b></a> |
+        <a href="../../games/tech/index.html"><b>Deathskull Labs</b></a> |
+        <a href="../../games/museum/index.html"><b>Museum</b></a> |
+        <a href="../../links.html"><b>Links</b></a></p>
+    </div>
+    <h1>Atari 5200 Controller Port</h1>
+    <p>Some of this is taken from the
+      <a href="http://www.cs.colostate.edu/~dzubera/2600faq.html">Atari 2600/5200/7800 FAQ</a>, or the
+      <a href="http://www.atarihq.com/5200/5200faq/index.html">Atari 5200 Supersystem FAQ</a>. </p>
+    <h2>Joystick Pinout</h2>
+    <p>15-pin male D-sub connector on the console.<br>
+      <img src="connectors/dsub_15_m.gif"></p>
+    <p>
+      <ol>
+        <li>Keypad right column (3, 6, 9, #) </li>
+        <li>Keypad middle column (2, 5, 8, 0) </li>
+        <li>Keypad left column (1, 4, 7, *) </li>
+        <li>Start, Pause and Reset column </li>
+        <li>Keypad third row (7, 8, 9) and Reset </li>
+        <li>Keypad second row (4, 5, 6) and Pause </li>
+        <li>Keypad top row (1, 2, 3) and Start </li>
+        <li>Keypad bottom row (*, 0, #) </li>
+        <li>Pot common </li>
+        <li>Horizontal Pot </li>
+        <li>Vertical Pot </li>
+        <li>+5VDC </li>
+        <li>Bottom side buttons </li>
+        <li>Top side buttons </li>
+        <li>0V (GND) </li>
+      </ol>
+    </p>
+    <p>It's handy to consider the keypad in a matrix format. </p>
+    <p>
+      <table border="border">
+        <tr>
+          <th width="20%">Pin #</th>
+          <th width="20%">4</th>
+          <th width="20%">3</th>
+          <th width="20%">2</th>
+          <th width="20%">1</th>
+        </tr>
+        <tr>
+          <th>7</th>
+          <td>Start</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <th>6</th>
+          <td>Pause</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <th>5</th>
+          <td>Reset</td>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <th>8</th>
+          <td></td>
+          <td>*</td>
+          <td>0</td>
+          <td>#</td>
+        </tr>
+      </table>
+    </p>
+    <p>For instance, mashing button 5 makes a connection between pins 2 and 6. </p>
+    <h3>Analog Direction Inputs</h3>
+    <p>Potentiometer inputs are 0-500kohm, linear. Directional inputs are read by a RC delay circuit, i.e. the time it takes a capacitor to recharge after being discharged determines the potentiometer positions. </p>
+    <p>
+      <ul>
+        <li>North=0 ohm between pins 9 and 11 </li>
+        <li>South=500 ohms between pins 9 and 11 </li>
+        <li>West=0 ohm between pins 9 and 10 </li>
+        <li>East=500 ohms between pins 9 and 10 </li>
+      </ul>
+    </p>
+    <p>The analog joystick is very much like having a pair of paddles, one each for horizontal and vertical coordinates. The difference is that while paddles use the 5V source for the common voltage, the 5200 analog stick has its own dedicated pin. This is because the stick has a definite center, while the paddles do not. To get consistent behavior with any combination of individual stick and individual console, they could have put trimmers on the stick so the user can adjust the center position. Instead of making each stick adjustable to suit the console, they gave the pots a tightly regulated voltage that's adjustable within the console. That's what the tiny little trimmer hanging out near the power on/off switch does. Not that big one; that's for adjusting the color phase delay. </p>
+    <h3>Side Buttons</h3>
+    <p>Side buttons are held high by the console until pulled down to ground by mashing a button. </p>
+    <h3>Keypad</h3>
+    <p>The keypad is read one column at a time. One of pins 1-4 is pulled low, then any buttons in that column that are mashed are read as low signals on pins 5-8. <hr></p>
+    <h2><a name="WICO">5200 Wico Command Control Joystick</a></h2>
+    <p>This is for those who want to a)use a 5200 Wico but don't have the keypad or Y-cable, or b)use the 9-pin jack on the keypad or Y-cable to connect their own controller (<i>very</i> handy). </p>
+    <p>9-pin male D-sub connector on either the Wico 5200 Keypad or the Y-cable.<br>
+      <img src="connectors/dsub_9_m.gif">
+      <ol>
+        <li>+5V </li>
+        <li>- </li>
+        <li>GND </li>
+        <li>Top fire button </li>
+        <li>Bottom fire button </li>
+        <li>Vertical pot </li>
+        <li>Pot common </li>
+        <li>Horizontal pot </li>
+        <li>- </li>
+      </ol>
+      <hr></p>
+    <h2><a name="trak">5200 Trak-Ball</a></h2>
+    <p>To be added. <hr></p>
+    <p class="list"><i>Jay Tilton</i><br>
+      06/28/98 </p>
+  </body>
+</html>

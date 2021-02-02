@@ -1,0 +1,130 @@
+/* link colours */
+
+A:link { color: #1d6b33 }
+A:visited { color: #506b58 }
+A:hover { color: #1e833b }
+
+
+/*
+  part				part of page
+    left			left part (logo, menu, footer)
+    right			right part (page content)
+*/
+
+TD.part { vertical-align: top }
+TD.part.left { font-size: smaller }
+
+
+/*
+  menu				side menu (left column)
+    category			category menu entry
+	count			number of systems [not used]
+    system			system menu entry
+	count			number of documents
+*/
+
+UL.menu { list-style-type: none; padding-left: 0  }
+UL.menu.category { margin-left: 0}
+UL.menu.system { margin-left: 1em }
+LI.menu.category { padding-top: 1ex; white-space: nowrap  }
+LI.menu.system { text-indent: -.5em; white-space: nowrap }
+.menu.count { font-size: smaller; margin-left: .5em }
+
+
+/*
+  footer			footer in left column
+    last-change			last change
+    setting			variable setting (local, hidden)
+*/
+
+P.footer.setting { font-size: smaller; margin-top: -.75em;
+		   margin-left: 1em; text-indent: -.5em }
+
+
+/*
+  title				page title
+    image			system picture
+    name			page title proper
+    alias			aliases for system name
+	proper			alias name proper
+*/
+
+TD.title { font-weight: bold; vertical-align: middle }
+.title.image { padding-right: 1em }
+.title.name { font-size: x-large }
+.title.alias { font-size: large }
+
+
+/*
+  toc				table of systems
+    category			category line
+    header			column header
+	name			system name header
+	count			number of entries header
+    system			entry for one system
+	image			small system picture
+	name			name of system
+	count			number of documents
+    summary			summary (all documents) line
+	category-all		summary of one category
+	    name		all documents page name
+	    count		number of documents
+	all			summary of all documents
+	    name		all documents page name
+	    count		number of documents
+*/
+
+TD.toc.image { text-align: center; padding-right: 1em }
+TD.toc.count { text-align: center }
+TH.toc.category { font-size: larger; padding-bottom: .5ex }
+TH.toc.header { padding-bottom: 1ex }
+TD.toc.summary { padding-top: 2ex }
+TD.toc.category-all { padding-bottom: 3ex }
+IMG.toc.system { border-width: 0 }
+.toc.category { font-size: large; font-weight: bold }
+.toc.header { font-size: medium; font-weight: bold }
+
+
+/*
+  docs				list of documents
+    category			category title line
+    system			system title line
+	image			small system image
+	name			system name
+    type			type of document title line
+    section			section title line
+    entry			actual document entry
+	link			link (left side) of entry
+	    anchor		anchor text
+	    note		note plus parens
+		proper		note proper
+	text			text (right side) of entry
+	    description		name of document
+	    version-date	version and date
+		version		version
+		date		date
+	    author		author (including parens)
+		proper		author name
+	    site		site document is from
+		proper		site name
+*/
+
+TH.docs.type { text-align: left; padding-top: 1ex }
+.docs.type { font-size: large }
+.docs.section { font-size: medium; font-weight: bold }
+TH.docs.category { font-size: larger; text-align: left; padding-top: 1ex }
+TH.docs.system { font-size: larger; text-align: left; padding-top: 1ex }
+IMG.docs.system.image { vertical-align: middle; padding-right: .5em }
+TH.docs.section { text-align: left; padding-top: .5ex }
+TD.docs.entry { vertical-align: text-top; padding-bottom: .25ex }
+TD.docs.entry.text { text-indent: -.5em; padding-left: 1em }
+
+/*
+  page				text page
+    normal			normal page
+    error			erorr page
+	unknown			page unknown
+	    name		name of unknown page
+*/
+
+TD.page { padding-top: 2ex }

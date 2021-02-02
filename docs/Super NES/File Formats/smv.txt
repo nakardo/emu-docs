@@ -1,0 +1,72 @@
+Snes9x Movie (SMV) File Format
+--------------------------------
+
+[[general description, purpose, origin]]
+
+
+Header
+------
+
+The file begins with a 32-byte header:
+
+offset	size	name			description
+0	4	magic			'SMV\x1a'
+4	4	version			1
+8	4	uid			[[describe]]
+12	4	rerecord_count		[[describe]]
+16	4	length_frames		number of frames - 1
+20	1	controllers_mask	bitmask of included controllers (0-4)
+21	1	options			option bits
+					bit 0: set: from reset
+					       clear: from snapshot
+					bit 1: set: PAL
+					       clear: NTSC
+22	2	reserved		0
+24	4	offset_savestate	file offset of contained savestate
+28	4	offset_controller_data	file offset of controller data
+
+
+Metadata
+--------
+
+The area between header and savestate (bytes 32-offset_savestate)
+can contain a movie comment in Unicode UCS-2 (little endian).
+
+
+Savestate
+---------
+
+[[actual movie files look differently]]
+
+if from reset:
+
+0	0x2000	sram			SRAM image
+
+if from snapshot:
+
+0	n	snapshot		SNES9x snapshot
+
+
+Controller Data
+---------------
+
+This section contains the recorded controller input: 2 bytes per
+controller per frame (little endian).  For each bit set in
+controllers_mask, the corresponding controller is included.
+Controllers not included are assumed to be disconnected.
+[[order]]
+
+bit	description
+0-3	always 1
+4	button R
+5	button L
+6	button X
+7	button A
+8	joystick right
+9	joystick left
+10	joystick down
+11	joystick up
+12	start
+13	select
+14	button Y
+15	button B

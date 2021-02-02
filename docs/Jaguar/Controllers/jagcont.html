@@ -1,0 +1,154 @@
+<html>
+  <head>
+    <title>Deathskull Laboratories! - Atari Jaguar Controllers</title>
+    <link href="../../style.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <div class="navtop">
+      <p class="list"><img height="49" src="../../images/skull.gif" width="87">
+        <a href="../../index.html"><b>Home</b></a> |
+        <a href="../../games/lists/index.html"><b>Lists</b></a> |
+        <a href="../../games/tech/index.html"><b>Deathskull Labs</b></a> |
+        <a href="../../games/museum/index.html"><b>Museum</b></a> |
+        <a href="../../links.html"><b>Links</b></a></p>
+    </div>
+    <h1>Atari Jaguar Controller Pinout</h1>
+    <p>This info came from the
+      <a href="http://www.digiserve.com/eescape/atari/FAQ_-_Jaguar">Jaguar FAQ</a>, and
+      <a href="http://www.compsoc.man.ac.uk/~xav/ejp_faq.090">The Atari Enhanced Joystick Ports FAQ</a>. </p>
+    <p>The Jaguar pad is basically four sets of buttons. Three of those sets have five buttons, and the fourth has six. Each set has one pin that is pulled low to read the buttons within that set on five (or six) other pins. It is useful to think of the Jagpad as a matrix of twenty-one buttons. </p>
+    <p>
+      <table border="1" cellspacing="0">
+        <tr>
+          <th></th>
+          <th></th>
+          <th width="200" colspan="4">Column address pin<br>
+            (outputs from console)</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th></th>
+          <th width="50">4</th>
+          <th width="50">3</th>
+          <th width="50">2</th>
+          <th width="50">1</th>
+        </tr>
+        <tr>
+          <th width="75" rowspan="6">Row data pin<br>
+            (inputs to console)</th>
+          <th>6</th>
+          <td>Pause</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th>10</th>
+          <td>A</td>
+          <td>B</td>
+          <td>C</td>
+          <td>Option</td>
+        </tr>
+        <tr>
+          <th>11</th>
+          <td>East</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <th>12</th>
+          <td>West</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <th>13</th>
+          <td>South</td>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <th>14</th>
+          <td>North</td>
+          <td>*</td>
+          <td>0</td>
+          <td>#</td>
+        </tr>
+      </table>
+    </p>
+    <p>Each of the four column pins is pulled low one at a time, and any buttons in that column that are pressed will cause a low signal to appear on its corresponding row pin. </p>
+    <h2>Pinout</h2>
+    <p>High-density 15-pin male D-sub connector on the controller.<br>
+      <img src="connectors/dsub_hd15_m.gif">
+      <ol>
+        <li>/Column 1 address (option, 3, 6, 9, #) </li>
+        <li>/Column 2 address (C, 2, 5, 8, 0) </li>
+        <li>/Column 3 address (B, 1, 4, 7, *) </li>
+        <li>/Column 4 address (Pause, A, N, S, E, W) </li>
+        <li>- </li>
+        <li>Row 1 data (pause) </li>
+        <li>+5VDC Source </li>
+        <li>- </li>
+        <li>GND </li>
+        <li>Row 2 data (A, B, C, Option) </li>
+        <li>Row 3 data (E, 1, 2, 3) </li>
+        <li>Row 4 data (W, 4, 5, 6) </li>
+        <li>Row 5 data (S, 7, 8, 9) </li>
+        <li>Row 6 data (N, *, 0, #) </li>
+        <li>- </li>
+      </ol>
+      <hr></p>
+    <h2>Team Tap</h2>
+    <p>A Jagpad can only be read one column at a time, and that's done by pulling the column address pin low while leaving the other three high. Since each column address pin has two digital states, and there are four pins, you end up using only four of the total sixteen possible binary combinations of those address pins. </p>
+    <p>That's where the Team Tap comes in. Each binary combination of the four address pins corresponds to one of the four columns on one of the four controllers that can be attached. </p>
+    <p>Again, looking at it in tabular format helps. Each cell represents the console's digital output of pins 1-4 needed to address each column (1-4) of each pad (A-D). </p>
+    <p>
+      <table border="border" cellpadding="3" cellspacing="0">
+        <tr>
+          <td colspan="2" rowspan="2">1=high<br>
+            0=low</td>
+          <th colspan="4">Column</th>
+        </tr>
+        <tr>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+        </tr>
+        <tr>
+          <th rowspan="4">Pad</th>
+          <th>A</th>
+          <td>1110</td>
+          <td>1101</td>
+          <td>1011</td>
+          <td>0111</td>
+        </tr>
+        <tr>
+          <th>B</th>
+          <td>0000</td>
+          <td>0001</td>
+          <td>0010</td>
+          <td>0011</td>
+        </tr>
+        <tr>
+          <th>C</th>
+          <td>0100</td>
+          <td>0101</td>
+          <td>0110</td>
+          <td>1000</td>
+        </tr>
+        <tr>
+          <th>D</th>
+          <td>1001</td>
+          <td>1010</td>
+          <td>1100</td>
+          <td>1111</td>
+        </tr>
+      </table>
+      <hr></p>
+    <p class="list"><i>Jay Tilton</i><br>
+      06/28/98 </p>
+  </body>
+</html>

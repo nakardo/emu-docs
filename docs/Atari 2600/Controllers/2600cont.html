@@ -1,0 +1,53 @@
+<HTML><HEAD><TITLE>Deathskull Laboratories! - Atari 2600 Controllers</TITLE>
+<LINK href="../../style.css" rel="stylesheet" type="text/css">
+</HEAD>
+<BODY LINK="maroon" VLINK="navy">
+
+<H1>Atari 2600 Controller Pinouts</H1>
+
+<P>The Atari 2600 set an early standard for controller ports. It is essentially identical on the Atari 7800, Atari 8-bit home computers and the Commodore VIC-20 and 64.
+<P>The ColecoVision, Sega Master System and Genesis, and MSX computers also used a very similar scheme, but with some differences to accommodate extra buttons.
+<P>In most cases, if a joystick is built strictly of mechanical switches it can be used on any of them. You get trouble only when you start throwing in logic circuits that need an external power source.
+<P>9-pin male D-sub connector at the console.<BR><img src="connectors/dsub_9_m.gif">
+
+
+<hr><H2><a name="stick">2600 Joystick</a></H2>
+<p>9-pin female D-sub connector on the joystick.<br><img src="connectors/dsub_9_f.gif">
+<p><OL><LI>/North<LI>/South<LI>/West<LI>/East<LI>-<LI>/Fire<LI>-<LI>GND<LI>-</OL>
+<P>Pins for direction and the fire button are normally high until forced low by the joystick.
+
+<hr><H2><a name="paddle">2600 Paddles</H2>
+<P>9-pin female D-sub connector on the paddles.<BR><img src="connectors/dsub_9_f.gif">
+<p><OL><LI>-<LI>-<LI>/Fire B<LI>/Fire A<LI>Paddle A<LI>-<LI>+5V / Pot common<LI>GND<LI>Paddle B</OL>
+<P>Pots are linear taper, with typically 0-500k functional range. Turning the knob left increases the resistance, and turning it right decreases. Fire button inputs are held high by the console until forced low when activated.
+
+<HR><H2><a name="keypad">2600 Keyboard / Touch Pad / Kids' controller</H2>
+<P>9-pin female D-sub connector on the keypad.<BR><img src="connectors/dsub_9_f.gif">
+<p><OL><LI>Top row (1, 2, 3)<LI>Second row (4, 5, 6)<LI>Third row (7, 8, 9)<LI>Bottom row (*, 0, #)<LI>Left column (1, 4, 7, *)<LI>Right column (3, 6, 9, #)<LI>+5V--pulls up pins 5 and 9 through 4.7k resistors<LI>-<LI>Middle column (2, 5, 8, 0)</OL>
+<P>How did they get twelve independent inputs on that thing? Seems pins 6 (normally the fire button input), 5 and 9 (normally paddle inputs) can be configured through software to be outputs. The game polls each column one at a time by setting the appropriate pin low and reading inputs on pins 1-4.
+<P>They pulled a little trick to get the paddle lines to work as outputs. Since paddles are read as an R-C delay, the capcitor must be discharged so it can be read again, at which point there is 0V at the pin. The 4.7k pull-up resistors are there so the pin returns to a high digital state immediately once the grounding function is turned off. You basically have a ground line you can turn on and off any time you want, i.e. a digital output.
+<P>If somebody is feeling <i>really</i> tricky, they could probably slap an 8-to-1 multiplexer on those three control lines and get 28 independent inputs from a single controller jack. If somebody is feeling totally insane, they could monkey both controller jacks together and get 504 independent digital inputs!
+
+<HR><H2><a name="bg">2600 Omega Race Booster Grip</H2>
+<P>9-pin female D-sub connector plugs into the console.<BR><img src="connectors/dsub_9_f.gif">
+<p><OL><LI>Pass-through to joystick /North<LI>Pass-through to joystick /South<LI>Pass-through to joystick /West<LI>Pass-through to joystick /East<LI>Front trigger (finger), fire<LI>Pass-through to joystick /Fire<LI>+5V--Activates triggers<LI>Pass-through to joystick GND<LI>Top trigger (thumb), thrust</OL>
+<P>So what the hell's going on here?  Basically, the two paddle inputs are being taken over to serve as buttons. When you mash a button on the booster grip, it sends 5V down the paddle line, as if you'd torqued a paddle all the way to the left. For whatever it's worth, the joystick's own fire button still works just like it always did, so it's conceivable somebody could make a game with the Booster Grip in mind that uses three separate fire buttons.
+<P>If you have a look at the <a href="cvcont.html">ColecoVision controller</a>, you can see why it can work as a substitute for the Booster Grip (left button=thrust, right button=fire).
+The left button of the CV stick goes between pins 8 and 6 just like the fire button of a 2600 stick.
+The right button goes between pins 5 and 6, and since pin 6 is a digital high, mashing the button is like sending 5V to pin 5 for this very low-current use.
+
+<HR><H2><a name="driv">2600 Driving Controller</a></H2>
+<P>To be added.
+
+<HR><H2><a name="trak">2600 Trak-Ball</a></H2>
+<P>To be added.
+
+<HR><H2><a name="7800">7800 Pro-Line Joystick</a></H2>
+<P>To be added.
+
+<HR><H2><a name="gun">2600/7800/8-Bit Light Gun</a></H2>
+<P>To be added.
+
+<hr><p class="list"><i>Jay Tilton</i>
+<br>06/28/98
+</BODY></HTML>

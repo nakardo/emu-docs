@@ -1,0 +1,157 @@
+
+ Comms Link hardware notes
+ by Charles MacDonald
+ WWW: http://cgfm2.emuviews.com
+
+ ----------------------------------------------------------------------------
+ Introduction
+ ----------------------------------------------------------------------------
+
+ Here's some information about how the Comms Link sends and recieves data.
+
+ It has an 8-bit bidirectional data bus, an output called ACK which the PAR
+ uses to signal to the Comms Link when it can read sent data, and an input
+ called STB which tells the PAR when to wait for data coming from the Comms
+ Link.
+
+ The way the protocol is designed doesn't allow for asynchronous communication
+ between the Comms Link and the PAR. Instead, data is exchanged between both
+ devices each time. If only a read or write is desired, the data sent or
+ received can be ignored.
+
+ The basic protocol works as follows:
+
+ PC:                                PAR:
+ Write byte to data port            Read STB until it becomes 1
+ Read busy flag until it becomes 0  Read byte from data port
+ Read byte from data port           Write byte to data port
+
+ The PC busy flag is implemented with two flip-flops and a PAL. The PAR has
+ some built in hardware which manages STB and ACK for handshaking. Here's
+ the full sequence including that information:
+
+ PC:
+ - Write byte to data port. The /WR strobe from the CPU makes the Comms Link
+   pull the STB pin high.
+ - Read busy flag until it becomes zero.
+ - Read byte from data port. The /RD strobe from the CPU makes the Comms Link
+   set the PC busy flag.
+
+ PAR:
+ - Read STB until it becomes one.
+ - Read byte from data port.
+ - Write byte to data port. The /WR strobe from the CPU makes the PAR pull
+   ACK high. The Comms Link responds by latching the contents of the data bus
+   on the rising edge of ACK, clearing the PC busy flag, and pulling STB
+   low all at the same time.
+
+ I don't know when ACK is pulled low after this. It must be done at some
+ point as the Comms Link won't latch data on the falling edge of ACK. Most
+ likely, the PAR hardware pulls ACK low when STB goes high after a PC data
+ port write, but I haven't probed around a PAR cartridge to confirm anything.
+ My test program works in this way and functions normally.
+
+ The other method would be that the PAR has some kind of timing mechanism and
+ pulls ACK low on it's own, though this would probably be more complex to
+ implement.
+
+ On power-up, the Comms Link hardware is set up like so:
+
+ - Output latch holds an undefined value (which the PAR will see when ACK
+   is low unless you write new data to the data port).
+ - Input latch returns an undefined value (usually $FF).
+ - STB pin returns zero.
+ - PC busy flag returns one.
+
+ When the PAR reads data, it will read out the contents of the output latch
+ if ACK is low, or it will read $FF if ACK is high.
+
+ ----------------------------------------------------------------------------
+ Interfacing example
+ ----------------------------------------------------------------------------
+
+ To do the testing needed to write up this document, I hooked up the Comms
+ Link to the second player joystick port of a Sega Genesis console. Here's
+ the cable configuration and 68000 code I used:
+
+ Pin 1 - D0 to Comms Link pin 2 (D0)
+ Pin 2 - D1 to Comms Link pin 3 (D1)
+ Pin 3 - D2 to Comms Link pin 4 (D2)
+ Pin 4 - D3 to Comms Link pin 5 (D3)
+ Pin 5 - +5V (left unconnected)
+ Pin 6 - TL to Comms Link pin 1 (STB)
+ Pin 7 - TH to Comms Link pin 11 (ACK)
+ Pin 8 - GND to Comms Link pins 14-25 (GND)
+ Pin 9 - TR to Comms Link pin 10 (STB)
+
+ Pins 1 and 10 on the Comms Link DB25 connector are both STB. The Saturn PAR
+ only uses pin 1, and it may be safer to assume in clone Comms Link cards
+ that only pin 1 should be used.
+
+ Due to the limitations of the joystick port, my test program only exchanges
+ nibbles between the PC and Genesis.
+
+; D0 = Value to exchange and return value from Comms Link
+; A0 = Address of joystick port. (e.g. $A10005)
+_exchange_nibble:
+                movem.l d1-d7/a0-a7, -(a7)
+
+                ; Set TH (ACK) as an output, and TL/TR (STB), D3-D0
+                ; as inputs.
+                move.b  #$40, $06(a0)
+
+                ; Poll STB until it is set
+    poll:       btst    #4, (a0)
+                beq.s   poll
+
+                ; Pull ACK low assuming a previous exchange left it high
+                ; or the TH pin hasn't been initialized yet.
+                move.b  #$00, (a0)
+
+                ; Read byte from Comms Link
+                move.b  (a0), d1
+
+                ; As above, but set D3-D0 as outputs
+                move.b  #$4F, $06(a0)
+
+                ; Send nibble with ACK high, Comms Link will
+                ; latch this byte for the PC to read
+                andi.b  #$0F, d0
+                ori.b   #$40, d0 ; Set TH bit (ACK)
+                move.b  d0, (a0)
+
+                ; Set D3-D0 back to inputs
+                move.b  #$40, $06(a0)
+
+                ; Mask unused bits and return nibble in D0
+                move.b  d1, d0
+                andi.b  #$0F, d0
+                movem.l (a7)+, d1-d7/a0-a7
+                rts
+
+ With some tweaks, the same cable could be used with the Sega Master System
+ or Game Gear SIO port as well. You could also use two joystick ports to
+ allow all eight bits of the data bus to be accessible.
+
+ ----------------------------------------------------------------------------
+ Acknowledgments
+ ----------------------------------------------------------------------------
+
+ Thanks to Anders M. Montonen for pointing out the Free Wing PAR package and
+ of course Free Wing for the parallel port interface schematic.
+
+ ----------------------------------------------------------------------------
+ Disclaimer
+ ----------------------------------------------------------------------------
+
+ If you use any information from this document, please credit me
+ (Charles MacDonald) and optionally provide a link to my webpage
+ (http://cgfm2.emuviews.com/) so interested parties can access it.
+
+ The credit text should be present in the accompanying documentation of
+ whatever project which used the information, or even in the program
+ itself (e.g. an about box).
+
+ Regarding distribution, you cannot put this document on another
+ website, nor link directly to it.
+

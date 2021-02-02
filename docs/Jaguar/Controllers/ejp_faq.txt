@@ -1,0 +1,1929 @@
+
+
+		The Atari Enhanced Joystick Ports
+
+		   Frequently Asked Questions
+ 
+		Version 0.90 - 24th September 1996
+
+  
+
+
+
+Contents
+========
+ 
+
+	1.1	About the author
+	1.2	Other contributors
+	1.3	New in this release/history
+	1.4	Disclaimer
+	1.5	The symbols used in this FAQ
+	1.6	Construction tips
+		
+	2.1	What is an enhanced joystick port (EJP)?
+	2.2	What machines have them?
+	2.3	What about other machines?
+	2.4	What is the pinout of an EJP?
+	2.5	What can they be used for?
+	
+	3.1	Jaguar joypads
+	3.2	So how does a joypad work?
+	3.3	Example joypad code
+	3.4	Joypad circuit diagram
+	3.5	Using joypads as normal joysticks
+	3.6	Joypad -> joystick adaptor circuit diagram
+	3.7	Programs which use joypads
+		
+	4.1	Jaguar team tap
+	4.2	Example team tap code
+	4.3	Team tap circuit diagram
+	4.4	Programs which can use a team tap
+		
+	5.1	Using joysticks with an EJP
+	5.2	Example joystick code
+	5.3	Joystick -> EJP adaptor circuit diagram
+	
+	6.1	Analogue joysticks
+	6.2	Example analogue joystick code
+	6.3	Analogue joystick circuit diagram
+	6.4	Programs which will use an anlogue joystick
+		
+	7.1	Digital paddles
+	7.2	Example digital paddle code
+	7.3	Digital paddle circuit diagram
+	7.4	Programs which will use a digital paddle
+	
+	8.1	Analogue paddles
+	8.2	Example analogue paddle code
+	8.3	Analogue paddle circuit diagram
+	8.4	Programs which will use an analogue paddle
+	
+	9.1	Light pens
+	9.2	Example light pen code
+	9.3	Light pen circuit diagram
+	9.4	Programs which will use a light pen
+	
+	10.1	Other output devices
+	
+	11.1	Other input devices
+	
+	
+N.B. 
+====
+A '*' before an item indicates that it has been added or updated with 
+this release of the FAQ.
+
+
+
+1.1About the author
+=======================
+	
+My name is Xav, and I have been using Ataris for several years now. 
+I began writing this FAQ because I was becoming fed up with seeing 
+the potential of the enhanced joystick ports (EJP) going to waste 
+due to a lack of understanding or information on how to program for 
+them.
+
+As most people will know, any game (or other application) is only as 
+good as its interface, and not every game is best suited to a mouse 
+or joystick. Over the years a number of companies, not least of 
+which is Atari, have pioneered the use of a wide range of different 
+devices, ranging from steering wheels to guns, and everything in 
+between. I hope that this FAQ will enable people to easily build a 
+selection of different controllers, and more importantly that it 
+will help programmers use them.
+
+If you have any useful information regarding the EJPs, or if you 
+feel there are any omissions or errors in this FAQ (I know I'm not 
+perfect), please feel free to contact me at the address shown below. 
+Similarly, if you have written, or know of any programs that use the 
+EJPs effectively, please let me know, so that I can include their 
+details here.
+
+All of this work is copyright, and whilst you are free to use and 
+distribute this information, certain restrictions apply:-
+
+	1)	No profit should be made from the distribution of this 
+		FAQ, apart from any minor amounts for PD libraries.
+
+	2)	This FAQ may not be distributed on a magazine 
+		coverdisk, or disk based magazine without my prior 
+		consent. In most cases this will be given, though 
+		there may be a small surcharge to commercial 
+		magazines.
+
+	3)	This FAQ may not be used as the basis for a magazine 
+		article in its own right. If you wish to publish an 
+		article based on this FAQ, please contact me, and I 
+		shall be happy to write it for you (for a small 
+		charge, of course) or discuss payment.
+
+	4)	If you pass this FAQ on to anybody else, it must be 
+		unchanged, and untampered with. In particular, my 
+		contact details must remain intact, in case the 
+		recipient wishes to receive the latest version.
+
+
+
+For the duration of this version of the FAQ, I can be contacted as 
+follows:-
+
+Email (preferable):	mbge4mdc@fs1.ee.man.ac.uk
+
+Snail mail:		Xav,
+			2 Beech Green,
+			Aylesbury,
+			Bucks,
+			HP21 8JG
+			ENGLAND
+
+
+If you wish to obtain the latest version of this FAQ, please, if you 
+possibly can, get it from my web pages:-
+
+			http://www.compsoc.man.ac.uk/~xav
+
+
+If you are unable to do this, you can request a copy from me via 
+email, although it may take me some time to get round to it. If you 
+genuinely have no net access, and are unable to get this FAQ from a 
+friend or PD library, then snail mail me sending a BLANK FORMATTED 
+FLOPPY and a STAMPED, SELF ADDRESSED ENVELOPE. If you fail to do so, 
+your request will be ignored. Sorry to be so harsh, but I do not 
+have the time or money to chase everyone up.
+
+
+If you are sending information to add to this FAQ, either snail mail 
+or email are acceptable, at your discretion.
+
+I am also always grateful for any money or other gifts. Whilst I am 
+not so tight as to make this FAQ "shareware", I would like you to bear 
+in mind the amount of time, effort and money that has gone into 
+obtaining the data in this FAQ. I can assure you, also, that any money 
+sent to me will be spent on components for further research and 
+information, which will then be added to this FAQ.
+
+
+
+1.2	Other contributors
+==========================
+
+Anthony Jacques <jacquesa@cs.man.ac.uk> has kindly filled in a lot of 
+spaces that I left for games supporting the EJPs. He has also been 
+kind enough to let me butcher his PC analogue joystick - although this 
+was mainly to see if I could get it to work with Moonspeeder for him 
+;)
+
+
+
+
+1.3	New in this release
+===========================
+
+Everything!
+
+This version has been rushed out because a large number of people were 
+asking for some of the information it contains. Whilst it is by no 
+means complete, I hope that it will be of use until the full version 
+(1.00) is released.
+
+Please still mail me with any additions, since I'm sure I haven't 
+thought of _everything_, even with my plans for V1.00
+
+
+
+1.4	Disclaimer
+==================
+
+To the best of my knowledge the information in this document is 
+correct. Neither I, nor any other contributors, can be held 
+responsible for any loss or damage that may occur as a result of the 
+use, or misuse of any of the information in this FAQ. In particular, 
+this FAQ describes a number of hardware devices that can be 
+manufactured by individuals - as with all such projects it is 
+possible to damage your computer if these devices are incorrect. No 
+responsibility can be accepted for such damage, or its consequences, 
+whether or not the information supplied was at fault.
+
+Any and all trademarks used herein are the property of their owners, 
+and no official connection is implied or claimed between them and 
+myself.
+
+
+1.5	The symbols used in this FAQ
+====================================
+
+A large proportion of this FAQ is dedicated to sharing knowledge about 
+the various alternative controllers available for the EJPs. This takes 
+two main forms - firstly there is (wherever possible) source code to 
+give examples to programmers in the hope that they will be more 
+willing to use the EJPs. Secondly there are circuit diagrams to 
+enable anyone with the right skill and knowledge to build a range of 
+alternative controllers for themselves.
+
+Owing to the fact that this FAQ is in purely ASCII format, to make it 
+as simple as possible to spread to other people, the circuit diagrams 
+are difficult to show. Consequently the following conventions will be 
+used:-
+
+	              |
+	--------- or  |	   = Interconnecting lines
+	              |
+
+		              
+	         |    | 
+	--*--  --*--  *--  = Connection of three or more conductors
+          |      |    |
+
+
+	----+   |
+	    |   |          = Interconnecting lines
+	    |   +-------
+	    
+	    
+	    |        |
+	----|---  -------  = Conductors crossing but not joining
+	    |        |
+	    
+	    
+	    O     ----O
+	    |              = Pin or terminal (e.g. in a plug/socket)
+	    |                 may also have a pin number nect to it
+
+
+          
+	---N/O---          = Normally open (make) switch
+	
+	---N/C---          = Normally closed (break) switch
+
+
+	             |
+	             #
+	---####---   #     = Resistor (may have value next to it)
+	             #
+	             |
+	
+
+	     |         |
+	     V         #
+	---####---  -->#   = Potentiometer (may have value next to it)
+	               #	(not strictly the same as a variable
+	               |	resistor, incidentally)
+	
+	             
+	             
+	---|>+---          = Diode (the + represents the end with the
+	                             line on the real thing)
+	           
+
+	             |         
+	---||---    ===    = Capacitor (may have value)
+	             |
+	             
+
+	     +      |+
+	---||---   ===     = Electrolytic capacitor
+	            |         (+ represents the anode)
+
+           
+        ---SS---           = Schmitt triggered gate
+        		      The actual schematic will either have 
+        		      more details or will be followed by a 
+        		      full pinout for the IC
+
+A rectangular box will often represent an IC. Use your common sense on 
+these ones, or mail me if you're really stuck.
+
+I will be using the following abbreviations:-
+
+	bk	black
+	bn	brown
+	rd	red
+	or	orange
+	ye	yellow
+	gn	green
+	bu	blue
+	vi	violet
+	wh	white
+	gy	grey
+	pi	pink
+	
+Anything preceded by a "l" or "d" is light or dark respectively (e.g. 
+lbu = light blue). Also:-
+
+	m	milli e.g. mA = milliamps
+	u	micro e.g. uF = microfarads
+	p	pica
+	n	nano
+	k	kilo
+	M	mega
+	
+A value of 4k7, for example, means 4.7 kilo Ohms. Although the Ohms are 
+not mentioned explicitly, units can be guessed from the component type 
+(Ohms for resistors, Farads for capacitors).
+
+
+
+1.6	Construction tips
+=========================
+
+Not many of these at present, but:-
+
+1)	When soldering to 15 pin, high density D connectors, try to do 
+	the middle row and middle pins first. If you do it with the 
+	outside pins first, you'll soon work out why ;)
+	
+2)	Owing to the case design of Atari equipment, the "wings" of 
+	standard 9 & 15 pin connectors often hit the plastic. Either 
+	move the connectors on the circuit board, or bend the wings 
+	back on the free plug or socket.
+
+3)	If you do bend the wings back, you'll find it hard to get 
+	standard hoods to fit. Try (-AFTER- you've tested everything) 
+	sealing the connectors in epoxy resin, such as Araldite.
+
+
+
+2.1	What is an enhanced joystick port (EJP)?
+================================================
+
+An EJP is a port found on the left hand side of some Atari 
+computers, on the front of the Atari Jaguar games console, and on 
+some Atari clone computers. It is a greatly enhanced joystick port 
+which is capable of supporting all manner of input, and even output 
+devices, both analogue and digital, and as such is perfect for games 
+usage with an appropriate controller.
+
+
+
+2.2	What machines have them?
+================================
+
+The following machines are known to posess EJPs:-
+
+	o The Atari STe (NOT the Mega STe)
+	
+	o The Atari Falcon030
+
+	o The Atari Jaguar games console
+
+	o The C-Lab Falcon mk II, and other C-LAB Falcon clones
+
+[can anyone else expand on this list, with other third party 
+machines?]
+
+
+
+2.3	What about other machines?
+==================================
+
+There have been several other machines in the Atari range that do 
+not posess EJPs by default, such as the STFM, TT, STacy, etc.
+
+Most software that supports the EJPs determines their presence by 
+checking the machine type, and ensuring that it is an STe or Falcon. 
+The memory locations used for accessing the EJPs are, however, unused 
+on other machines (at least, according to "The Atari Compendium"), so 
+it is conceivable that they could be "retro-fitted" to another 
+machine, such as a Mega STe or TT.
+
+It is also conceivable that EJPs could be added, but mapped to 
+different memory locations - which would allow additional EJPs to be 
+added to STes or Falcons. In order to anticipate this possibility, I 
+am proposing that all new software that is designed to use the EJPs 
+should not only check the machine type, but ALSO check for a cookie 
+called "EJPx" where x is a number from 0 to 9. There are some cases 
+(detailed later) in which it would be useful to obtain more 
+information about the existing ports, so it is recommended that any 
+drivers designed to use the existing ports should install a cookie of 
+"EJP0". A driver for an additional EJP should install the next 
+sequential cookie, so if "EJP1" does not exist, then there are no 
+extra EJPs.
+
+I have yet to finalise the information that will be contained in the 
+cookie, although it is likely that the cookie value will be a 
+pointer to a structure giving further details about the extra ports. 
+For example, the structure will contain information about the number 
+of ports added, their addresses, and their capabilities (some may 
+only support the digital I/O, for example).
+
+If you have any suggestions or ideas for the information that should 
+be stored, and how it should be arranged, then please contact me.
+
+
+
+2.4	What is the pinout of an EJP?
+=====================================
+
+An EJP is a female 15 pin high density D connector. The connector on 
+the joypad or other device to plug into it is consequently a male 
+high density 15 pin D connector. It should be noted that high 
+density 15 pin connectors have three rows of five pins in the same 
+size shell as the 9 pin connectors used for the normal mouse and 
+joystick conncetions on an Atari computer. They should not be 
+confused with the normal density 15 pin connectors, which have two 
+rows of pins, and are physically larger.
+
+Owing to the shape and size of the cutouts for the connectors on the 
+computer, most 15 pin connectors will hit the plastic with their 
+"wings". The best solution I have found for this is to bend the 
+"wings" backwards, and encase the soldered joints, wings and part of 
+the body in an epoxy resin, such as "Araldite". This produces a 
+solid and sturdy plug unit - but ensure the device is working before 
+you do this, as it is practically irreversible once set.
+
+Looking into the port on the computer, the connector looks something 
+like this:-
+
+
+	--------------------------------------------------
+	\          *       *       *      *      *       /
+	 \         5       4       3      2      1      /
+	  \                                            /
+	   \          *       *       *      *     *  /
+	    \        10       9       8      7     6 /
+	     \                                      /
+	      \   *       *       *      *      *  /
+	       \ 15      14      13     12     11 /
+	        \________________________________/
+
+
+
+The pins are nominally allocated as follows. Please note, however, 
+that this is according to the Falcon030 manual, and does not 
+necessarily relate to the pin usage in some of the projects and 
+adaptors desribed in the rest of this FAQ.
+
+
+		PORT A 				PORT B
+		====== 				======
+
+	 1 - UP 0			 1 - UP 1
+	 2 - DOWN 0			 2 - DOWN 1
+	 3 - LEFT 0			 3 - LEFT 1
+	 4 - RIGHT 0			 4 - RIGHT 1
+	 5 - PADDLE 0 : Y AXIS		 5 - PADDLE 1 : Y AXIS
+	 6 - FIRE 0/LIGHT GUN		 6 - FIRE 1
+	 7 - Vcc (+5V DC)		 7 - Vcc (+5V DC)
+	 8 - Not connected		 8 - Not connected
+	 9 - GROUND			 9 - GROUND
+	10 - FIRE 2			10 - FIRE 3
+	11 - UP 2			11 - UP 3
+	12 - DOWN 2			12 - DOWN 3
+	13 - LEFT 2			13 - LEFT 3
+	14 - RIGHT 2 			14 - RIGHT 3
+	15 - PADDLE 0 : X AXIS 		15 - PADDLE 1 : X AXIS
+	 
+ 
+
+
+
+2.5	What can they be used for?
+==================================
+
+Quite a lot really. The pin description above only tells half the 
+story - each port actually consists of a pair of analogue to digital 
+convertors, as well as a number of digital input lines and digital 
+output lines. In principal, therefore, the EJPs can be wired up to 
+form a quite sophisticated I/O port. A number of resolution 
+enhancers for the Falcon rely on this fact.
+
+In practice, it would be more usual to connect them to tried and 
+tested I/O devices, the most common being joypads, joysticks, 
+paddles and light pens. These are all described below.
+
+
+
+
+
+3.1	Jaguar joypads
+======================
+
+These are the controllers that Atari designed to be used with their 
+Jaguar games console. Somewhat sensibly, they made them compatible 
+with the "old" STe and Falcon EJPs, with the result that a number of 
+games on these machines now support them. The joypad is a fairly 
+bulky device, designed to be held firmly in both hands. 
+
+On the top left is the direction pad, which allows the usual 
+joystick style 8-way movement (UP, DOWN, LEFT, RIGHT). The top right 
+sports three fire buttons (A, B and C), with B being used as the 
+main fire button in most games. This may seem a little strange, but 
+the idea is that it is easy to move to either of the other buttons 
+from B.
+
+Between these two areas there are PAUSE and OPTION buttons. There is 
+also a 12 button numeric keypad on the lower part of the unit, with 
+the numbers 0-9 (telephone style) and * and # in the lower left and 
+right corners respectively.
+
+There is also a "procontroller" which has three additional fire 
+buttons, X, Y and Z, as well as a pair of "sidestep" buttons, L and R, 
+which are on the top of the unit.
+
+
+	PROGRAMMERS NOTE
+	================
+
+	Concerning the usage of the buttons. Where possible, it would 
+	be best to use the same systems used on the Jaguar, to make 
+	things easier for people using both platforms. As has already 
+	been stated, B should be programmed as the main fire button 
+	(or an option should allow the user to choose the function of 
+	each fire button)
+	
+	The PAUSE button, strangely enough should pause the gameplay, 
+	if this is an option. If a message appears on screen during 
+	pause mode, pressing 1+3 (i.e. 1 and 3 together) should remove 
+	it, but still leave the game paused.
+	
+	0 should be used to toggle music on and off.
+	
+	*+# (* and # together) should reset the game, and should take 
+	priority over "0" since at least one of the projects outlined 
+	below has the option to make the computer think that all 
+	three buttons have been pressed, in order to reset the game.
+	
+	To account for users with a procontroller, X is mapped to 9, Y 
+	to 8 and Z to 7. L and R are mapped to 4 and 6 respectively.
+	
+	Please also note that the joypad need not only be used for 
+	games. Any software requiring a "remote control" would benefit 
+	from it - e.g. sequencers.
+	
+	
+
+3.2	So how does a joypad work?
+==================================
+
+A joypad essentially consists of a matrix of 4 groups of 5 buttons, 
+plus one group of 6 buttons. These groups are arranged as follows:-
+
+
+	Group 4:PAUSE, FIRE A, UP, DOWN, LEFT, RIGHT
+	Group 3:FIRE B, *, 7, 4, 1
+	Group 2:FIRE C, 0, 8, 5, 2
+	Group 1:OPTION, #, 9, 6, 3
+
+
+Only one group can be read at any one time, so to read the entire 
+joypad, four reads have to be made. The reason for this is to do with 
+the fact that Atari decided to make the joypad with 21 buttons, but a 
+15 pin plug. At first it may seem impossible to fit the signals from 
+21 buttons, plus the 0V and 5V lines into a 15 pin plug, but it can be 
+done, using a system called multiplexing.
+
+A multiplexer is simply a form of digital switch. It has a number of 
+"control inputs", a number of "data inputs", and a number of "data 
+outputs". The control lines are used to provide a code which will 
+determine which of the inputs is routed to which of the outputs. For 
+example, consider the following simple multiplexer:-
+
+
+		         +-------------+
+		I1 ------|             |
+		         | MULTIPLEXER |---------- Q1
+		I2 ------|             |
+		         +------+------+
+		                |
+		                |
+		C1 -------------+
+
+
+Now, assume C1 is HIGH (this is a binary system, so it can only have 
+two states, LOW (0) or HIGH (1) ). If this is the case, whatever 
+signal is applied to I1 will be routed to the output, Q1. If C1 is 
+switched to LOW then the signal on I2 is routed to Q1.
+
+Now imagine that the two inputs are connected to switches, and that 
+the output is connected to the host computer. By simply changing C1, 
+via an OUTPUT from the computer, it is possible to read both 
+switches using only one INPUT.
+
+The multiplexer in the joypad works in a similar manner, except that 
+it has four control lines, six output lines, and twenty-one input 
+lines (the switches). To read any particular group of switches, you 
+first write a value to the control lines. Writing a value which 
+takes only the first control line low will enable you to read the 
+six switches in group 1. Taking only the second control line low 
+will enable you to read the switches in group 2, and so on.
+
+Matters are inevitably complicated, however, by the actual hardware 
+configuration used in the STe and Falcon. There are, as you know, 
+two EJPs on these machines, and Atari chose, quite sensibly, to 
+combine their addresses in in the memory map. In order to read 
+joypads on these machines, therefore, you must do the following:-
+
+
+	1)	Write a value to address 0xFF9202. This sets the 
+		control lines on the multiplexers.
+	
+	2)	Read the values at 0xFF9200 and/or 0xFF9202. These 
+		will have certain bits cleared (set to LOW) to 
+		indicate which switches in a group are being pressed.
+
+
+The value that you write in step one is made up as follows: it is a 
+long, whose lower four bits represent the control inputs of joypad A, 
+and whose next four bits (5-7) represent the control inputs of joypad 
+B. For example:-
+
+	0xFFFE	Selects group 4, joypad A for reading
+	0xFFFD	Selects group 3, joypad A
+	0xFFFB	Selects group 2, joypad A
+	0xFFF7	Selects group 1, joypad A
+	
+	0xFFEF	Selects group 4, joypad B for reading
+	0xFFDF	Selects group 3, joypad B
+	0xFFBF	Selects group 2, joypad B
+	0XFF7F	Selects group 1, joypad B
+	
+
+Xav's Hint #1
+=============
+
+Although not officially documented, it should be possible to combine 
+these values as below. Please note that I have not tried this myself, 
+so can offer no guarantees, but I see no reason for it not to work.
+
+	0xFFEE	Selects group 4, joypads A and B
+	0XFFB7	Selects group 2, joypad B and group 1, joypad A
+
+			
+Xav's Hint #2
+=============
+
+Another thing that is possible is the reading of multiple groups 
+simultaneously. For example, setting bit 0 low selects port A group 4. 
+Similarly, bit 1 selects port A group 3, and bit 2 selects port A 
+group 2. Therefore, setting all three of these bits low, by writing a 
+value of 0xFFF8, should give an output when a button in group 4 OR 
+group 3 OR group 2 is pressed. I.e.
+
+	o	Write 0xFFF8
+	o	Read from 0xFF9200
+	o	If bit 1 is clear, then the user pressed fire button 
+		A, or fire button B, or fire button C.
+		
+This method can therefore be used in a situation where your program 
+only needs to respond to one button, either because the game design is 
+such that one button is all that is needed, or at screens where you 
+might present a message saying "Press Any Fire Button To Continue".
+
+If you think about these two points a little, you'll see that they add 
+a great deal of flexibility to the joypads, allowing you to read 
+buttons more easily in most circumstances than is at first apparent.
+
+
+	NOTE
+	====
+	
+	The second hint will not work if the player has a "Team Tap" 
+	connected (see below). It does, however, provide a means of 
+	testing whether or not there is a "Team Tap" connected because 
+	of the change in behaviour. You should not, therefore, write 
+	code which relies on hint 2, since the "Team Tap" is 
+	transparent to "normal" code. That is, if you test for each 
+	group individually, rather than checking for a button in group 
+	1 OR group 2 (for example) in one go, your code will work 
+	whether there is a "Team Tap" present or not.
+	
+	You can, however, still check both controllers in one pass 
+	(hint 1).
+	
+	See the section below on the "Team Tap" for more details.
+
+
+
+Once you have written the requisite mask to 0xFF9202, you can read 
+back the state of the joypad(s) from 0xFF9200 and 0xFF9202. Since the 
+joypad works on NEGATIVE LOGIC, a bit is CLEARED whenever a button is 
+pressed. In the table below, the first letter indicates the port that 
+is being read, so A FIRE B represents fire button B on the joypad 
+attached to port A. The exact bit that is cleared determines which 
+button has been pressed as follows:-
+
+
+
+	Group 4		Group 3		Group 2 	Group 1
+	=======		=======		=======		=======
+
+0xFF9200
+========
+
+Bit 0	A PAUSE		  N/A		  N/A		  N/A
+
+Bit 1	A FIRE A	A FIRE B	A FIRE C	A OPTION
+
+Bit 2	B PAUSE		  N/A		  N/A		  N/A
+
+Bit 3	B FIRE A	B FIRE B	B FIRE C	B OPTION
+
+
+0xFF9202
+========
+
+Bit 8	A UP		  A *		  A 0		  A #
+
+Bit 9	A DOWN		  A 7		  A 8		  A 9
+
+Bit 10	A LEFT		  A 4		  A 5		  A 6
+
+Bit 11	A RIGHT		  A 1		  A 2		  A 3
+
+Bit 12	B UP		  B *		  B 0		  B #
+
+Bit 13	B DOWN		  B 7		  B 8		  B 9
+
+Bit 14	B LEFT		  B 4		  B 5		  B 6
+
+Bit 15	B RIGHT		  B 1		  B 2		  B 3
+
+
+Okay, so having probably confused everyone now, here's the summary. To 
+read a joypad, simply write a value to 0xFF9202 with bit 0, 1, 2 or 3 
+low (and/or 4, 5, 6 or 7 for port B) depending on which group you want 
+to read. Next read from 0xFF9200 and/or 0xFF9202 to obtain a bitmask 
+giving the buttons in that group that were pressed, as in the table 
+above. Clear as Guinness or what!!?!??
+
+
+
+
+3.3	Example joypad code
+===========================
+
+This is a _very_ basic bit of C to read the joypad ports. MASK should 
+be replaced with the correct bitmask for the group(s) you wish to 
+read, which would normally be #define'd elsewhere to make the code 
+easier to read. Note: You must be in supervisor mode to access the 
+ports, so either use Super() as below, or Supexec on a whole function. 
+Normally you would use a function like this to repeatedly read each 
+port and/or each group, and fill an array or structure which can then 
+be used by the rest of the program.
+
+
+In this instance the values of firebuttons (0xFF9200) and keypad 
+(0xFF9202) are simply printed to the screen. Usually you would do 
+something a little more useful with them!
+
+/*
+**	Start of example code
+*/
+
+void main (void)
+{
+	void *stack_address;
+	short *mask_address = (short *)0xFF9202;
+	short *firebuttons = (short *)0xFF9200;
+	short *keypad = (short *)0xFF9202;
+	unsigned short firebuttons_pressed;
+	usnogned short keypad_pressed;
+	
+	while(1)	/* Just to make the test code repeat	*/
+	{	
+		/* Go into supervisor mode	*/
+		stack_address = Super(NULL);
+		
+			/* Write the mask value	*/
+			*mask_address = MASK;
+			
+			/* And read the results	*/
+			firebuttons_pressed = *firebuttons;
+			keypad_pressed = *keypad;			
+		
+		/* Return from supervisor mode	*/
+		Super(stack_address);
+		
+		/* Print the result		*/
+		printf("\nFirebuttons = %d, Keypad = %d", 
+				firebuttons_pressed, keypad_pressed);
+	}		
+	return;
+}	
+	
+/*
+**	End of example code
+*/
+
+	
+	
+3.4	Joypad circuit diagram
+==============================
+
+NOTE: This circuit diagram has been obtained by dissecting a joypad, 
+and is provided for information purposes only. If you use this design 
+in order to produce your own joypad or other device, I cannot be held 
+responsible for any infringement of patents or other legal 
+implications that may arise.
+
+
+
+15 Pin High Density
+D Socket
+
+ 7 O---------*---------*--*--*--*--*--+
+             |         |  |  |  |  |  |
+ 1 O---------|---------|--|--|--|--|--|---------------------+
+ 2 O---------|---------|--|--|--|--|--|---------------------|--+
+ 3 O---------|---------|--|--|--|--|--|---------------------|--|--+
+ 4 O---------|---------|--|--|--|--|--|---------------------|--|--|--+
+             |         |  |  |  |  |  |                     |  |  |  | 
+             |         |  |  |  |  |  |       *--|>+--N/O---*  |  |  |
+             |         |  |  |  |  |  |       |     (OPTION)|  |  |  |
+             |         |  |  |  |  |  |       |             |  |  |  |
+             | 20      |  |  |  |  |  |       *--|>+--N/O---|--*  |  |
+        +----+----+    |  |  |  |  |  |       |       (C)   |  |  |  |
+        |         |    #  #  #  #  #  # All   |             |  |  |  |
+        | 74HC244 |    #  #  #  #  #  # 4k7   *--|>+--N/O---|--|--*  |
+        |         |    #  #  #  #  #  #       |       (B)   |  |  |  |
+      16|         |4   |  |  |  |  |  |       |             |  |  |  |
+10 O----+---SS----+----*--|--|--|--|--|-------*--|>+--N/O---|--|--|--*
+        |         |       |  |  |  |  |               (A)   |  |  |  |
+        |         |       |  |  |  |  |                     |  |  |  | 
+        |         |       |  |  |  |  |       *--|>+--N/O---*  |  |  |
+        |         |       |  |  |  |  |       |       (3)   |  |  |  |
+        |         |       |  |  |  |  |       |             |  |  |  |
+        |         |       |  |  |  |  |       *--|>+--N/O---|--*  |  |
+        |         |       |  |  |  |  |       |       (2)   |  |  |  |
+        |         |       |  |  |  |  |       |             |  |  |  |
+        |         |       |  |  |  |  |       *--|>+--N/O---|--|--*  |
+        |         |       |  |  |  |  |       |       (1)   |  |  |  |
+       6|         |14     |  |  |  |  |       |             |  |  |  |
+11 O----+---SS----+-------*--|--|--|--|-------*--|>+--N/O---|--|--|--*
+        |         |          |  |  |  |             (RIGHT) |  |  |  |
+        |         |          |  |  |  |                     |  |  |  | 
+        |         |          |  |  |  |       *--|>+--N/O---*  |  |  |
+        |         |          |  |  |  |       |       (6)   |  |  |  |
+        |         |          |  |  |  |       |             |  |  |  |
+        |         |          |  |  |  |       *--|>+--N/O---|--*  |  |
+        |         |          |  |  |  |       |       (5)   |  |  |  |
+        |         |          |  |  |  |       |             |  |  |  |
+        |         |          |  |  |  |       *--|>+--N/O---|--|--*  |
+        |         |          |  |  |  |       |       (4)   |  |  |  |
+      12|         |8         |  |  |  |       |             |  |  |  |
+12 O----+---SS----+----------*--|--|--|-------*--|>+--N/O---|--|--|--*
+        |         |             |  |  |              (LEFT) |  |  |  |
+        |         |             |  |  |                     |  |  |  | 
+        |         |             |  |  |       *--|>+--N/O---*  |  |  |
+        |         |             |  |  |       |       (9)   |  |  |  |
+        |         |             |  |  |       |             |  |  |  |
+        |         |             |  |  |       *--|>+--N/O---|--*  |  |
+        |         |             |  |  |       |       (8)   |  |  |  |
+        |         |             |  |  |       |             |  |  |  |
+        |         |             |  |  |       *--|>+--N/O---|--|--*  |
+        |         |             |  |  |       |       (7)   |  |  |  |
+       9|         |11           |  |  |       |             |  |  |  |
+13 O----+---SS----+-------------*--|--|-------*--|>+--N/O---|--|--|--*
+        |         |                |  |              (DOWN) |  |  |  |
+        |         |                |  |                     |  |  |  | 
+        |         |                |  |       *--|>+--N/O---+  |  |  |
+        |         |                |  |       |       (#)      |  |  |
+        |         |                |  |       |                |  |  |
+        |         |                |  |       *--|>+--N/O------+  |  |
+        |         |                |  |       |       (0)         |  |
+        |         |                |  |       |                   |  |
+        |         |                |  |       *--|>+--N/O---------+  |
+        |         |                |  |       |       (*)            |
+       7|         |13              |  |       |                      |
+14 O----+---SS----+----------------*--|-------*--|>+--N/O------------*
+        |         |                   |               (UP)           |
+        |         |                   |                              |
+      18|         |2                  |                              |
+6  O----+---SS----+-------------------*----------|>+--N/O------------+
+        |         |                                 (PAUSE)           
+        |         |
+        |         |10
+        |         +-----+
+        |         |     |
+        +-+---+---+     |
+         1|   |19       |
+	  |   |         |
+	  |   |         |
+ 9 O------*---*---------+
+	
+
+
+
+
+3.5	Using joypads as normal joysticks
+=========================================
+
+One of the reasons that not many people have bought joypads for their 
+STes or Falcons is the lack of software that supports them. Whilst a 
+great many programs support the "old" joystick ports, only the very 
+latest software supports the EJPs. It would therefore be very useful 
+if a joypad could be used in an "old" joystick port, since the 
+purchase of one joypad would get you a device that can be used in 
+either type of port.
+
+This was exactly the sort of thing that I wanted to do with my own 
+joypad when I bought it, so I designed the (wait for it...) 
+"Padaptor". Sad name, maybe, but it's cheap and easy to make.
+
+
+
+3.6	Joypad -> joystick adaptor circuit diagram
+==================================================
+
+	15 pin high density			9 pin D
+	     D socket				socket
+
+		14 O------------------------------O 1
+		13 O------------------------------O 2
+		12 O------------------------------O 3
+		11 O------------------------------O 4
+		10 O------------------------------O 6
+		 7 O------------------------------O 7
+		 9 O----------------*-------------O 8
+		                    |
+		 4 O----------------*
+		                    |
+		 3 O----------------*
+		                    |
+		 2 O----------------+
+
+
+This works because the joypad and the joystick both work on "negative 
+logic" - i.e. a LOW value is considered to be TRUE. By connecting the 
+control lines of the joypad to 0V, all the buttons are effectively 
+ORed together. For use as a joystick, this allows you to use UP, DOWN, 
+LEFT, RIGHT and any of the fire buttons. Several of the other buttons 
+will also mirror these effects, although that should not cause any 
+problems.
+
+
+
+3.7	Programs which use joypads
+==================================
+
+This section will be used to provide a list of programs for the STe 
+and Falcon which will use a joypad if available. The first column will 
+contain either an "o", indicating that a joypad is optional, and that 
+another means of control is also available. A "c" indicates that a 
+joypad is compulsory, and the game cannot be played without one. An 
+"m1", "m2" etc. indicates that a joypad is required for multiplayer 
+mode - i.e. a joypad is needed for more than one player (in the first 
+case) or more than two players (in the second). A "?", unsurprisingly, 
+means that I don't any information available, so if anyone can help...
+
+Games for the Jaguar are not listed, because it can be reasonably 
+assumed that all Jaguar games support the joypad.
+
+This list is _very_ sparse at the moment (due to time), and I would be 
+grateful if people could email me the details of any programs I have 
+not listed. In the case of PD, freeware or shareware, an address or 
+FTP site where it can be obtained would be useful.
+
+
+	PD/Shareware, Etc.
+	==================
+	
+	?	Double Bobble 
+		By Resevoir Gods
+	        ftp://ftp.cnam.fr/pub/Atari/Falcon/Games/dublbobl.zip
+
+	?	Super Bomber Man 
+		By Marc Bolion
+	        ftp://ftp.cnam.fr/pub/Atari/Falcon/Games/sbm_08.zip
+
+	?	BioHazard 2
+		By Les Greenhalgh/Village Software
+	        STF coverdisk 83
+	        
+	?	Tron 2000
+		(preview - not finished yet)
+	        http://www.cs.man.ac.uk/~jacquesa/tron2000/
+
+	?	STOS Falcon Extension 
+		(not a game, of course!)
+	        http://www.cs.man.ac.uk/~jacquesa/falcextn.lzh
+	
+	Bad Mood will support the Joypad... (2.06c has joypad support...)
+	
+	
+	Commercial
+	==========
+	
+	?	Evolution Dino Dudes 
+		Published by 16/32
+		
+	c	Llamazap 
+		Published by 16/32
+		
+	?	Gravon
+
+	        demo at: 
+	        ftp://ftp.cnam.fr/pub/Atari/Falcon/Games/gravdem.lzh
+
+	?	Multi-Briques 
+		By Parx
+
+	        demo at: 
+	        ftp://ftp.cnam.fr/pub/Atari/Falcon/Games/multi.zip
+
+	?	Ping 2000 
+		By Holland Game Design
+
+	        demo at: 
+	        ftp://ftp.cnam.fr/pub/Atari/Falcon/Games/ping2k_d.zip
+
+	?	Steel Talons 
+		Published by 16/32
+
+	        demo at: 
+	        ftp://ftp.cnam.fr/pub/Atari/Falcon/Games/stltalon.zip
+
+	?	Willies Adventures 
+		(preview - not finished yet)
+		By New Beat Development
+	        ftp://ftp.cnam.fr/pub/Atari/Falcon/Games/wp940204.tos
+
+	?	X-Moon 
+		(preview - not finished yet)
+	        ftp://ftp.cnam.fr/pub/Atari/Falcon/Games/xmoon_pr.zip
+
+	o	Moonspeeder 
+		From Merlin
+
+	        demo at: 
+	        ftp://ftp.uni-kl.de/pub/atari/falcon/games/MoonSpeeder_demo.zip
+
+	c	Rock'N'Roll Clams
+		Published by Caspian Software
+		
+	c	Zero-5
+		Published by Caspian Software
+		
+		
+There is also a program available that allows the joypad to be used in 
+place of the mouse. Whilst this is not practical for day to day use, 
+it can be very handy for mouse based multiplayer games (such as Triple 
+Yahoo, for example) since the mouse still works too, so more than one 
+player can have their own controls, rather than all huddling round the 
+mouse. In fact, with enough serial ports, a graphics tablet and a 
+serial mouse, it is possible to have 4 devices all controlling the 
+mouse pointer! Can anyone supply the name and an FTP location for this 
+program, please? It is available from Floppyshop in the UK, but I 
+don't know the disk number, unfortunately.
+
+Once the format of the "EJP0" cookie has been finalised (see above, 
+and in the light pen section) it would be useful to have a program 
+that uses the joypad as a mouse, but which also installs the cookie, 
+so could either the programmer of the above application, or someone 
+who is prepared to write a new one, contact me.
+
+
+
+4.1	Jaguar team tap
+=======================
+
+Atari have released a multiplayer adaptor for use with the Jaguar, 
+which they have called the "Team Tap" (TT). The TT allows up to four 
+joypads to be plugged into each socket on the Jaguar, giving a 
+theoretical maximum of eight players.
+
+The TT is bundled "free" with the basketball game "White Men Can't 
+Jump", and is also supposedly available separately. For Falcon and STe 
+owners who cannot find one on sale without the game, or for anyone who 
+is interested or who needs to repair a TT, the circuit diagram 
+follows.
+
+On an STe or Falcon, I am adopting the following standard for 
+referring to the TT outputs. I will be using a two letter code, where 
+the first represents the joypad port on the computer and the second 
+represents the joypad port on the TT. Possible values are therefore 
+AA, AB, AC, AD, BA, BB, BC, BD.
+
+The way the TT works is to fully decode the four control lines that 
+the joypad uses. By "fully decode", I mean that all 16 binary 
+addresses are available with the TT, giving access to four 
+controllers, each with four groups of buttons. Consequently, trick 2 
+in the joypad section will no longer work, since writing to the 
+control lines with a value of (say) 0xFFF8 will no longer set all 
+three lower control lines LOW on one joypad. Instead it will access 
+group 1 of joypad AC.
+
+The decoding has been designed so that "normal" reads from the joypad 
+will work fine on AA or BA, even if the TT is in place. In other 
+words, using mask values of 0xFFFE, 0xFFFD, 0xFFFB or 0xFFF7 for 
+example, will all work fine with the first joypad in port A, whether 
+or not it is connected through a TT (in which case it is joypad AA).
+
+The full list of codes is as follows, as #defines for C programmers ;)
+
+#define	portAA_group4	0xFFFE	/*	...11111110	*/
+#define	portAA_group3	0xFFFD	/*	...11111101	*/
+#define	portAA_group2	0xFFFB	/*	...11111011	*/
+#define	portAA_group1	0xFFF7	/*	...11110111	*/
+
+#define	portAB_group4	0xFFF0	/*	...11110000	*/
+#define	portAB_group3	0xFFF1	/*	...11110001	*/
+#define	portAB_group2	0xFFF2	/*	...11110010	*/
+#define	portAB_group1	0xFFF3	/*	...11110011	*/
+
+#define	portAC_group4	0xFFF4	/*	...11110100	*/
+#define	portAC_group3	0xFFF5	/*	...11110101	*/
+#define	portAC_group2	0xFFF6	/*	...11110110	*/
+#define	portAC_group1	0xFFF8	/*	...11111000	*/
+
+#define	portAD_group4	0xFFF9	/*	...11111001	*/
+#define	portAD_group3	0xFFFA	/*	...11111010	*/
+#define	portAD_group2	0xFFFC	/*	...11111100	*/
+#define	portAD_group1	0xFFFF	/*	...11111111	*/
+
+
+
+#define	portBA_group4	0xFFEF	/*	...11101111	*/
+#define	portBA_group3	0xFFDF	/*	...11011111	*/
+#define	portBA_group2	0xFFBF	/*	...10111111	*/
+#define	portBA_group1	0xFF7F	/*	...01111111	*/
+
+#define	portBB_group4	0xFF0F	/*	...00001111	*/
+#define	portBB_group3	0xFF1F	/*	...00011111	*/
+#define	portBB_group2	0xFF2F	/*	...00101111	*/
+#define	portBB_group1	0xFF3F	/*	...00111111	*/
+
+#define	portBC_group4	0xFF4F	/*	...01001111	*/
+#define	portBC_group3	0xFF5F	/*	...01011111	*/
+#define	portBC_group2	0xFF6F	/*	...01101111	*/
+#define	portBC_group1	0xFF8F	/*	...10001111	*/
+
+#define	portBD_group4	0xFF9F	/*	...10011111	*/
+#define	portBD_group3	0xFFAF	/*	...10101111	*/
+#define	portBD_group2	0xFFCF	/*	...11001111	*/
+#define	portBD_group1	0xFFFF	/*	...11111111	*/
+
+
+Simply write the required code to 0xFF9202, then read from 0xFF9200 
+and 0xFF9202 as usual.
+
+In order to determine whether or not a TT is present, you need to be a 
+little bit sneaky. Since there is no flag (that I have found, at 
+least) that is set or cleared by the addition of the TT, you need to 
+check for its existance based on the change of behaviour of the 
+computer when it is added. Below is one method for doing this:-
+
+
+
+o	Display some sort of title screen, and request that a player 
+	presses a key on the first joypad in that port (for example 
+	"Press B on the first joypad to continue").
+	
+o	This will involve sending a mask with bit 1 cleared (B is in 
+	group 3), for port A.
+	
+o	As soon as you register the keypress for button B, test for 
+	another combination that has bit 1 cleared. For example, you 
+	could write a mask of 0xFFF8, which has bits 0, 1 and 2 
+	cleared. If there is just a normal joypad attached, this will 
+	be decoded as an OR, as in hint 2 in the joypad section. The 
+	result is that you should still be registering button B as 
+	being pressed, since it will register if button A OR B OR C is 
+	pressed in this instance.
+	
+o	If you do not register button B as still being pressed, then 
+	either they let go of it very quickly, or they have a TT, in 
+	which case the value 0xFFF8 will be decoded to check another 
+	joypad. It is possible that the other joypad will also have B 
+	depressed, but if your code works fast enough, you should be 
+	able to check several combinations of masks with bit 1 
+	cleared, before the B button is released. This reduces the 
+	likelihood of inadvertantly thinking there is a TT present, 
+	when there isn't.
+	
+o	In addition, repeating this procedure, by going through any 
+	necessary option screens or title screens _before_ the player 
+	chooses the number of competitors, will increase your chances 
+	of correctly identifying the existance of a TT.
+	
+
+If anyone knows a better way to check for the existance of a TT, I'd 
+be happy to hear it!
+
+
+
+4.2	Example team tap code
+=============================
+
+Simply use the normal joypad code, but for MASK, insert one of the 
+labels that are #define'd above. The values returned are of the same 
+format as for a normal joypad, so the table in that section applies.
+
+
+
+4.3	Team tap circuit diagram
+================================
+
+COMING IN THE NEXT VERSION
+
+
+
+4.4	Programs which can use a team tap
+=========================================
+
+Only a couple of Jaguar games at the moment. If you are writing 
+anything that will use a TT, please let me know.
+
+	o	White Men Can't jump
+		Jaguar basketball game
+		Published by Atari
+		Comes supplied with a "free" team tap
+		
+	o	NBA Jam
+		Jaguar basketball game
+		Said to play better (but look and sound a little 
+		worse) than the Playstation version ;)
+
+	
+	
+	
+5.1	Using joysticks with an EJP
+===================================
+
+There are a couple of ways to use joysticks with EJPs. The first is 
+to simply wire them as joypads, in which case either use the circuit 
+diagram above, or wire each switch in parallel with its counterpart in 
+a _real_ joypad.
+
+The other way is by means of an adaptor. This device will allow you to 
+use two normal joysticks in a single EJP. New games should really use 
+the code for a team tap if they need extra players, but the details 
+for this adaptor are included here for completeness. As far as I know 
+there is only one game that supports this system, although the game is 
+so good that it makes it worthwhile. The game is "Dynablasters" and 
+involves you trying to blow your friends up for no apparent reason. 
+Using two of these adaptors, up to six people can play the game - 
+which is damned good fun!
+
+
+
+5.2	Example joystick code
+=============================
+
+I haven't looked into how to read this adaptor, but from the circuit 
+diagram I would guess that you read from 0xFF9200 and 0xFF9202, but 
+that you _do not_ have to write a mask first. Reading 0xFF9200 would 
+give the following:-
+
+	Bit 0 clear	FIRE, joystick 1, port A
+	
+	Bit 1 clear	FIRE, joystick 2, port A
+	
+	Bit 2 clear	FIRE, joystick 1, port B
+	
+	Bit 3 clear	FIRE, joystick 2, port B
+	 
+
+The other values are returned from 0xFF9202 as follows:-
+
+
+	Bit 0 clear	UP, joystick 1, port A
+	
+	Bit 1 clear	DOWN, joystick 1, port A
+	
+	Bit 2 clear	LEFT, joystick 1, port A
+	
+	Bit 3 clear	RIGHT, joystick 1, port A
+	
+	Bit 4 clear	UP, joystick 1, port B
+	
+	Bit 5 clear	DOWN, joystick 1, port B
+	
+	Bit 6 clear	LEFT, joystick 1, port B
+	
+	Bit 7 clear	RIGHT, joystick 1, port B
+	
+	Bit 8 clear	RIGHT, joystick 2, port A
+	
+	Bit 9 clear	LEFT, joystick 2, port A
+	
+	Bit 10 clear	DOWN, joystick 2, port A
+	
+	Bit 11 clear	UP, joystick 2, port A
+	
+	Bit 12 clear	RIGHT, joystick 2, port B
+	
+	Bit 13 clear	LEFT, joystick 2, port B
+	
+	Bit 14 clear	DOWN, joystick 2, port B
+	
+	Bit 15 clear	UP, joystick 2, port B
+	
+	
+	
+NOTE:
+=====
+
+This information is purely speculation based on the circuit diagram 
+for the adaptor. I have not tried to read from one of these devices 
+myself. This information is provided as a starting point for anyone 
+who may wish to investigate further, however if you have any more 
+information, or if you find any errors in my guesswork, please let me 
+know.
+
+
+5.3	Joystick -> EJP adaptor circuit diagram
+===============================================
+
+Get five friends, six joysticks, two adaptors, a copy of Dynablasters 
+and HAVE FUN!!! If you don't have that many joysticks, but do have a 
+joypad, bear in mind that you can use the "Padaptor" described above - 
+or even incorporate it into this design.
+
+
+	15 pin high density			9 pin D plug
+	     D plug				(joystick 1)
+
+		 1 O------------------------------O 1	UP
+		 2 O------------------------------O 2	DOWN
+		 3 O------------------------------O 3	LEFT
+		 4 O------------------------------O 4	RIGHT
+		 6 O------------------------------O 6	FIRE
+		 9 O----------------*-------------O 8	GROUND
+		                    |
+		                    |
+		                    |           9 pin D plug
+		                    |           (joystick 2)
+		                    |
+		                    +-------------O 8	GROUND
+		10 O------------------------------O 6	FIRE
+		11 O------------------------------O 1	UP
+		12 O------------------------------O 2	DOWN
+		13 O------------------------------O 3	LEFT
+		14 O------------------------------O 4	RIGHT
+
+
+
+
+6.1	Analogue joysticks
+==========================
+
+Each of the EJPs has a pair of analogue to digital convertors (ADCs). 
+These are capable of taking a continuously varying input, and 
+converting it to a digital value from 0 to 255. The easiest way to 
+provide this continuously varying input is via a potentiomer. This is 
+a variable resistance connected across the supply rails, with an 
+output tapped off from a "wiper" that can move along the track of 
+resisting material. The result is that the output from this wiper can 
+be swung (theoretically) from 0V to 5V. In practice these extremes are 
+not available due to other resistances in the system, and the physical 
+restrictions of potentiometers themselves.
+
+By arranging two such potentiometers, one connected to each ADC, at 90 
+degrees to each other, a linkage can be made in the form of a 
+joystick, whereby any point in a square area can be categorised by a 
+pair of x and y voltages. These voltages are supplied to the ADCs, and 
+the application can then obtain an absolute value for the position of 
+the joystick at any given time.
+
+The difference betweenthis and "normal" joysticks is that a normal, or 
+"digital" joystick works by using switches. Depending on the direction 
+the stick is pushed in, none, one or two switches will close, and the 
+computer interprets this as a relative command - "I want to move in 
+this direction". The speed at which you move is dictated by the 
+mechanics of the game, not by how fast you move the stick. With an 
+analogue stick, however, you are giving an absolute position - "I want 
+to be at coordinates (x, y)" - so the speed of your movement is 
+(usually) dependent on the speed at which you move the stick.
+
+Digital joysticks work fine for most games, but some, such as flight 
+simulators, work best with analogue sticks. Analogue sticks went out 
+of fashion for a while, but many PC games now use them, so you can 
+probably adapt a PC stick to suit the EJP.
+
+
+
+6.2	Example analogue joystick code
+======================================
+
+Below is the code for reading this, however the fire buttons are read 
+in the same way as for the joypad, so are not covered. "The Atari 
+Compendium" contains an error on the addresses of the analogue stick 
+information, though the memory map at the back is correct. Essentially 
+you need to read from the following addresses:-
+
+	0xFF9210	Joystick A, X direction
+	0xFF9212	Joystick A, Y direction
+	0xFF9214	Joystick B, X direction
+	0xFF9216	Joystick B, Y direction
+	
+These will return values from 0 to 255, where 0,0 represents the 
+bottom left and 255,255 is the top right [can someone confirm this?]
+
+With regard to the fire buttons on an analogue joystick, no standards 
+have been set by Atari. The inputs to the ADCs use "spare" pins that 
+are otherwise unused on the joypad, so it would actually be possible 
+to have a full set of 21 buttons (or even 24 if the PAUSE line was 
+fully decoded!). In practice I would suggest that if you are writing 
+any games for an analogue joystick, that you can assume that the three 
+fire buttons will be present, and that any other buttons (pause, 
+option and numeric keypad) should have their functions duplicated on 
+the STe or Falcon keyboard, in case they are not present on the 
+controller.
+
+/*
+**	Code to read an analogue joystick on an STe or Falcon
+**	By Xav
+*/
+
+void main (void)
+{
+	void *stack_address;
+	short *x_axisA = (short *)0xFF9210;
+	short *y_axisA = (short *)0xFF9212;
+	unsigned char x_axis_returned;
+	unsigned char y_axis_returned;
+	
+	while(1)
+	{	
+		/* Supervisor mode	*/
+		stack_address = Super(NULL);
+		
+			/* Read the ports	*/
+			x_axis_returned = *x_axisA;
+			y_axis_returned = *y_axisA;			
+		
+		/* Return to user mode	*/
+		Super(stack_address);
+		
+		/* Display the results	*/
+		printf("\nX Axis = %d, Y Axis = %d", 
+			x_axis_returned, y_axis_returned);
+	}		
+	return;
+}
+
+/*
+**	End of example code
+*/
+
+
+
+
+6.3	Analogue joystick circuit diagram
+=========================================
+
+COMING SOON.... WATCH THIS SPACE
+In the meantime, if anyone with a PC analogue joystick could hack it 
+open and let me know what potentiometers are in there, I'd appreciate 
+it! I.e. their value (1Meg, 470k, etc) type (Lin or Log) and how many 
+connections are made to it (probably 2 or 3).
+
+
+
+
+6.4	Programs which will use an analogue joystick
+====================================================
+
+	o	Moonspeeder 
+		From Merlin
+
+	        demo at: 
+	        ftp://ftp.uni-kl.de/pub/atari/falcon/games/MoonSpeeder_demo.zip
+
+	
+	
+	
+7.1	Digital paddles
+=======================
+
+Paddles are another term for rotary controllers, and like joysticks 
+they come in both analogue and digital forms. Essentially a paddle has 
+a wheel that you turn, which is represented on screen by either 
+something turning, or something moving (usually linearly). It also has 
+one or more buttons, for firing, etc.
+
+A digital paddle can be revolved contiually in either direction, i.e. 
+there are no end "stops". They give a relative direction of the form 
+"I am moving up/left/clockwise" or "I am moving 
+down/right/anticlockwise". They are best used for applications in 
+which things must be able to move continually, usually cyclically. The 
+best examples are overhead driving games, such as Indy500 on the Atari 
+2600 games console (which had a pair of digital "driving" paddles 
+supplied with it), or games such as Tempest.
+
+And yes, in case you're wondering, Tempest 2000 on the Jag does allow 
+you to use digital paddles.
+
+
+
+
+
+7.2	Example digital paddle code
+===================================
+
+A digital paddle is read in exactly the same way as a joypad, it is 
+simply the interpretation that is different. In order to read a 
+digital paddle, you will also need some kind of "memory element" - for 
+example a static variable called last_position.
+
+Essentially the paddle will give out the following sequences:-
+
+	LEFT, NONE, RIGHT, LEFT... for anticlockwise
+	
+	RIGHT, NONE, LEFT, RIGHT... for clockwise
+	
+	
+As a programmer you simply need to know the last position the paddle 
+was in. If it is the same as the current one, the paddle has not been 
+turned, otherwise you can determine which direction it was turned in 
+from the information above.
+
+For example if the last position was with "LEFT" apparently pressed, 
+then if the current position is also LEFT, the paddle has not moved. 
+If the current position is RIGHT, the paddle has been moved clockwise. 
+If there are NONE depressed (i.e. neither left nor right), then the 
+paddle has been moved anticlockwise. Get it?
+
+
+
+
+
+7.3	Digital paddle circuit diagram
+======================================
+
+The hardest part about building a digital paddle is tracking down a 
+suitable rotary switch. It must be capable of complete rotation, and 
+must be either a "clickless" or "light click" type. It must also have 
+a single pole, and the number of ways must be divisible by 3 (most 
+are). For example, in the UK you can buy a "clickless" 1 pole 12 way 
+switch from Maplin (order code XX45Y, catalogue from W H Smith) for 
+about a pound.
+
+Incidentally, the more ways the better, as will become clear (i.e. a 
+24 way is better than a 12 way if you can find one!).
+
+For the Maplin switch, the design is such that it cannot be turned 
+completely. What you need to do is prise open the two halves of the 
+body and you'll find a lump on the inside of the body that acts as a 
+stop against a lump on the shaft. Trim one of these off with a Stanley 
+knife, and reassemble. The switch should now turn totally (if not, 
+make sure you've removed the stop ring from below the nut on the main 
+body - it's a metal ring with a pin which pokes into the body itself). 
+When disassembling one of these, watch what goes where! It's a simple 
+device, but it's still possible to reassemble the contacts wrongly.
+
+
+Once you've obtained and, if necessary, doctored your switch, connect 
+it up as follows (assuming the pin numbering starts at 1): pin 1 
+connects to pin 4 and to pin 7 and pin 10 (every third one). Pin 2 
+connects to 5, 8 and 11. Pins 3, 6, 9 and 12 are left unconnected. 
+Flyleads are needed from pins 1 and 2 and from the pole.
+
+The remainder of the circuit is as follows:-
+
+
+
+15 Pin High Density
+D Socket
+
+ 7 O---------*---------*--*--*--*--*--+
+             |         |  |  |  |  |  |
+ 1 O---------|---------|--|--|--|--|--|--------------------+
+ 2 O---------|---------|--|--|--|--|--|--------------------|--+
+ 3 O---------|---------|--|--|--|--|--|--------------------|--|--+
+ 4 O---------|---------|--|--|--|--|--|--------------------|--|--|--+
+             |         |  |  |  |  |  |                    |  |  |  | 
+             |         |  |  |  |  |  |       *--|>+--N/O--+  |  |  |
+             |         |  |  |  |  |  |       |     (OPTION)  |  |  |
+             |         |  |  |  |  |  |       |               |  |  |
+             | 20      |  |  |  |  |  |       *--|>+--N/O-----+  |  |
+        +----+----+    |  |  |  |  |  |       |       (C)        |  |
+        |         |    #  #  #  #  #  # All   |                  |  |
+        | 74HC244 |    #  #  #  #  #  # 4k7   *--|>+--N/O--------+  |
+        |         |    #  #  #  #  #  #       |       (B)           |
+      16|         |4   |  |  |  |  |  |       |                     |
+10 O----+---SS----+----*--|--|--|--|--|-------*--|>+--N/O-----------*
+        |         |       |  |  |  |  |               (A)           |
+      14|         |6      |  |  |  |  |                             |
+11 O----+---SS----+-------*--|--|--|--|----------|>+--N/O----+      |
+        |         |          |  |  |  |               (2)    |      |
+       7|         |13        |  |  |  |                      |      |
+12 O----|---SS----|----------*--|--|--|----------|>+--N/O----*------*
+        |         |             |  |  |               (1) (POLE)    |
+      18|         |2            |  |  |                             |
+ 6 O----|---SS----|-------------*--|--|----------|>+--N/O-----------+
+        |         |                |  |             (PAUSE)
+       9|         |11              |  |                              
+13 O----|---SS----|----------------*  |
+	|         |                   |
+      12|         |8                  |
+14 O----|---SS----|-------------------+
+        |         |
+        |         |10
+        |         +-----+
+        |         |     |
+        +-+---+---+     |
+         1|   |19       |
+	  |   |         |
+	  |   |         |
+ 9 O------*---*---------+
+	
+
+(1), (2) and (POLE) refer to those flyleads you attached to the switch 
+earlier, remember!
+
+As you may have noticed, this diagram does not include the numeric 
+keypad of the Jaguar joypad. I didn't bother with it because it is not 
+really needed for Tempest 2000, which was the real reason I built this 
+prototype. If you want to add it, you can simply add the switches and 
+diodes in the same way as for the joypad, which is why pins 13 and 14 
+are connected through the chip to the pull up resistors. If you never 
+intend to add a keypad, these pins can be tied permanently HIGH (to 
+pin 7).
+
+If you don't want to add the keypad, but DO want the reset function of 
+"* and #" in jaguar games, simply add a N/O switch to pull pin 8 on 
+the IC LOW (to pin 9 of the 15 pin connector). This has the effect of 
+making the Jag think that you are pressing *, 0 and # simultaneously.
+
+
+Problems
+========
+
+Unfortunately the resolution of a rotary switch is is not really high 
+enough to use effectively with Tempest 2000. The result is that you 
+have to spin the controller a bit too much for any noticeable movement 
+in the game, since each section of the web requires several "moves" to 
+make the ship go to the next section. There are a nmber of solutions 
+to this:-
+
+1)	Work on your muscles and speed to enable you to spin the thing 
+	like a crazed wildman with hayfever in the middle of a field 
+	of flowers in the height of summer.
+	
+2)	Add an electronic solution. The most obvious one I could come 
+	up with would consist of a state machine to determine which 
+	direction the dial is being spun in which in turn gates a 
+	local oscillator, so that the Jag sees (say) three button 
+	presses for every notch that the controller is turned through.
+
+3)	Attach the switch to the dial via a set of gears.
+
+4)	Use a higher resolution switch. This might be possible using 
+	an optical shaft encoder - I'll look into it when I get some 
+	more money!
+
+5)	Attach the switch to a well sized handle, and a big flywheel 
+	so that when you spin it, it keeps on spinning. Now _that's_ 
+	the way to play Tempest!
+	
+	
+From this, I would suggest that anyone writing a game to support these 
+controllers should give the user the option of a "scaling factor". 
+This would take account of anyone using a plain controller, as well as 
+those using a geared up or altered controller. Note that one full 
+revolution of a standard controller will pass through 12 "points", in 
+case that helps you work out how to scale or structure the game.
+
+Strangely, however, Jeff Minter (we're not worthy!) wrote the code for 
+the rotary controller into T2K based on an adapted Indy500 racing 
+paddle that Atari supplied. Since the Indy500 paddle also has a 12 way 
+switch, the resolution should have been too low on that as well, so 
+either Jeff wanted us all to fit flywheels for the real arcade 
+experience, or I'm missing something, somewhere.
+	
+Note also that digital paddles are basically an adaption of the 
+joypad, so they will also work with a Team Tap, for multiplayer games 
+(now, does anyone want to write an 8 player Falcon version of 
+Indy500???)
+
+
+	
+	
+7.4	Programs which will use a digital paddle
+================================================
+
+Tempest 2000 on the Jag and, erm, that's about it at the moment!
+(But what a game it is!!!!)
+
+
+
+
+8.1	Analogue paddles
+========================
+
+An analogue paddle is a rotary controller which only moves through a 
+restricted range of movement (usually about 270 degrees). It returns 
+an absolute position of the form "I am currently at an angle of x 
+degrees". The position is defined as a value between 0 and 255.
+
+Each EJP supports two analogue paddles - they are simply the x and y 
+potentiometers of an analogue joystick separated into two different 
+boxes. The problem then comes from the fire buttons, so I would like 
+to propose the following standard:-
+
+	Paddle 1	Fire A = Joypad Fire A
+			Fire B = Joypad Fire B
+			Fire C = Joypad Fire C
+			Pause  = Joypad Pause
+			Option = Joypad Option
+			
+	Paddle 2	Fire A = Joypad 9
+			Fire B = Joypad 8
+			Fire C = Joypad 7
+			Pause  = Joypad 4
+			Option = Joypad 6
+			
+			
+The mappings for paddle 2 were chosen to correspond to the mappings 
+used for the extra buttons on the procontroller, so another way of 
+looking at it is A=X, B=Y, C=Z, Pause=L and Option=R. Note L & R are 
+the fingertip buttons, NOT LEFT and RIGHT on the direction pad.
+
+If you choose to build, or support these paddles in your progams, 
+please use these mappings, since everyone will be working to the same 
+standard then.
+
+As a guideline, paddles are best used when an object has to move over 
+a fixed path, from one end to another and back again. The best example 
+is a game like "Breakout" where the paddle is used to move the bat 
+left and right. Similarly "Space Invaders" would benefit from a 
+paddle, and "Circus Atari", for those that remember it, was a superb 
+paddle based game (a bit like breakout in some respects). A "Pong" 
+style game would also work well with paddles.
+
+
+
+
+
+8.2	Example analogue paddle code
+====================================
+
+Exactly the same as the analogue joystick code, except that x and y 
+now correspond to paddle 1 and paddle 2. The fire buttons are read as 
+for the joypad, but please bear in mind the mappings shown above.
+
+Note that both the analogue joystick and analogue paddles (as well as 
+the light pen, covered below) are incompatible with the team tap.
+
+
+
+
+8.3	Analogue paddle circuit diagram
+=======================================
+
+COMING SOON
+
+
+
+
+
+8.4	Programs which will use an analogue paddle
+==================================================
+
+As far as I know, the really poor version of breakout that came free 
+with the Falcon supports analogue paddles, but I don't know of 
+anything else.
+
+
+
+
+
+9.1	Light pens
+==================
+
+A light pen is a device that responds to the bright light of the 
+electron beam in a CRT (i.e. a monitor or television). It relays this 
+as a pulse back to the computer, which is then able to calculate where 
+the electron beam, and hence the light pen, were positioned. With a 
+suitable criver, a light pen could be used in place of a mouse to 
+"draw" on th screen.
+
+A variation on the same theme is a light gun, which works on a similar 
+principle, but is designed to be used at a distance, for "shooting" 
+games, etc.
+
+The inner workings of a light pen are quite straightforward, since it 
+only has to detect the electron beam, then shape the resultant pulse 
+to suit the input to the computer. In the early days of home computing 
+there were many commercial and DIY implementations of light pens, and 
+it may be possible to adapt one of these to suit the EJP.
+
+The biggest issue regarding a light pen and the EJP is that of 
+buttons. The light pen can be used on port A, and the signal is fed 
+into pin six. On a joypad this line is only used for the PAUSE button, 
+so it would be conceivable to build a light pen supporting 20 buttons! 
+In practice the most likely use for a light pen would be as a mouse 
+replacement/complement, so any more than four buttons would be 
+overkill. In fact, my prototype light pen only has two buttons, 
+representing the left and right mouse buttons on a normal Atari mouse.
+
+It is my proposal that anyone building a light pen should map the 
+buttons as follows:-
+
+	"Left" button	=	Joypad LEFT
+	"Right" button	=	Joypad RIGHT
+	Button 3	=	Joypad UP
+	Button 4	=	Joypad DOWN
+	
+	
+These buttons have been selected since they make most sense, and are 
+all connected to one line within the joypad, reducing the time 
+required to read them all (i.e. all four buttons are returned as a 
+bitmask with one read, rather than with four reads).
+
+If anyone writes a driver to support a light pen as a mouse (i.e. 
+outside of one specific program) then the notes about installing an 
+"EJP0" cookie should be noted, and you are advised to contact me about 
+the contents of the structure this should point to. In addition, such 
+a driver should ideally work in co-operation with the existing mouse, 
+and the driver should be able to "unhook" itself at the request of the 
+user - i.e. if they want to run a program that needs the EJPs for 
+something else.
+
+
+
+
+
+9.2	Example light pen code
+==============================
+
+I do not have any example code available for this at present, though 
+it should be a "simple" case of reading address 0xFF9220 and 0xFF9222 
+for the x and y co-ordinates of the light pen respectively.
+
+The buttons will be read in the same way as for the joypad.
+
+There is a potential problem: according to "The Atari Compendium" only 
+the lower ten bits are significant, giving a range of 0-1023. Since I 
+have not tried any code for this, I do not know if that is in terms of 
+pixels, or in terms of relative distance. If it is a pixel value the 
+code will behave unpredictably for large (>1024 pixels) screens.
+
+In addition the light pen relies on the timing of the video system, so 
+will probably be incompatible with video cards and maybe with 
+resolution enhancers such as Blow Up or Screenblaster. All this, 
+however, is pure speculation, and is simply included as a warning, or 
+as a possibility for courageous readers to explore (let me have the 
+results, though!).
+
+
+
+
+
+9.3	Light pen circuit diagram
+=================================
+
+I have a circuit diagram for a light pen designed to work with the old 
+Atari 8-bit micros. I am in the middle of constructing this, although 
+it is temporarily on hold due to other commitments.
+
+The design I am using was originally published in an old copy of 
+"Electronics - The Maplin Magazine", and was subsequently republished 
+in one of their compilation books. The book, unfortunately, is out of 
+print, although if you really want to try to build your own light pen, 
+you could try contacting Maplin (I got my copy from my local Maplin 
+shop, who had a reference copy of the book, and photocopied the 
+article for me).
+
+If/when I finish my light pen, and assuming it works, I shall try to 
+get permission from Maplin to reproduce the circuit diagram here.
+
+
+
+
+
+9.4	Programs which will use a light pen
+===========================================
+
+None, as far as I know.
+
+
+
+
+
+10.1	Other output devices
+============================
+
+As has been stated before, the joypad is configured by writing to four 
+output lines. It is conceivable that these lines could be tapped off 
+for other purposes, and I believe that some of the resolution 
+enhancers for the Falcon rely on this trick to communicate with their 
+hardware.
+
+It would be possible to build a full 8-bit output port from both EJPs, 
+or a 4-bit output from one. If anyone builds such a device for any 
+useful reason, please mail me with details.
+
+
+
+
+
+11.1	Other input devices
+===========================
+
+Similarly the EJP has a number of input lines, as well as 2 ADCs. It 
+could consequently be used for a number of different input devices. 
+For example, with both EJPs it would be possible to make a four 
+channel "mixer" controller for sending out MIDI continuous controller 
+data, or the digital inputs could be attached to footswitches for a 
+similar purpose. If you design any device or code to support such 
+devices, please mail me with full details so that I can include them 
+here.
+
+
+******************************************************************
+			END OF FAQ

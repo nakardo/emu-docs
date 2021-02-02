@@ -1,0 +1,27 @@
+The rating on the AC adapter for the DUO:
+	Input AC 120V 60HZ 16W
+	Output DC 10V 1000mA
+	The center part is positive, the outer is negative.
+
+For the Turbo Express:
+	Input AC 120V 60HZ 13W
+	Output DC 7V 700mA
+	Center plug is positive, the outer is negative.
+
+
+For the TG+CD:
+	Input AC 120V 60HZ 28W
+	Output DC 11V 1.53A (1530 mA)
+	Center plug is negative, the outer is positive.
+
+
+For the TG-16:
+	Input AC 120V 60HZ 15W
+	Output DC 10.5V 730mA
+	Center plug is negative, outer is positive.
+
+For the SuperGrafx (Japan):
+	Input AC 100V 50/60HZ 16Va
+	Output DC 9V  800mA
+	Center plug is negative, outer is positive.
+

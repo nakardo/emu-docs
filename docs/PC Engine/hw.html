@@ -1,0 +1,176 @@
+<html>
+<head>
+<meta Name="Generator" Content="Lotus Word Pro">
+<title>Memory Mapping</title>
+</head>
+
+<body  bgcolor="#F1F180">
+<center>
+<a href=".." target = _top><img src="../banner1.jpg" alt="* Return to top page *
+"></a>
+<p>
+</center>
+
+<font size=+3><em>Much more information will be available in the near future!  Until then, enjoy this summary of the Turbo/PCE memory mapping.
+<p> </em> </font>
+
+
+
+<p align=center><font size=5><b><strong></strong></b></font>
+<font size=5><b><strong>Memory Mapping</strong></b></font>
+<p><font size=5><b><strong></b></font></strong>
+<p>The HuC6280 has a 64KB logical address space and a 2MB physical address space.  To access this entire memory space, the processor depends on 8 <em>memory mapping registers, </em>known as MPR0 - MPR7.  These registers map each 8KB segment of the logical address space to an 8KB segment in the physical address space.  
+<p>Thus, the first block of memory, $0000 - $1FFF, is mapped using MPR0.  The next segment, $2000 - $3FFF, is mapped using MPR1, and so on.  These registers are set using the special <tt>TAM</tt> and <tt>TMA</tt> opcodes, described in the opcode section.
+<p align=center><center>
+<table border=2 cellspacing=0 cellpadding=5>
+	<tr>
+		<td width=175 align=center valign=top><em>Memory Segment</em>
+		<td width=56 align=center valign=top><em>MPR #</em>
+		<td width=185 align=center valign=top><em>TAM / TMA argument</em>
+	<tr>
+		<td  align=center valign=top><tt>$E000 - $FFFF</tt>
+		<td  align=center valign=top><tt>7</tt>
+		<td  align=center valign=top><tt>10000000</tt>
+	<tr>
+		<td  align=center valign=top><tt>$C000 - $DFFF</tt>
+		<td  align=center valign=top><tt>6</tt>
+		<td  align=center valign=top><tt>01000000</tt>
+	<tr>
+		<td  align=center valign=top><tt>$A000 - $BFFF</tt>
+		<td  align=center valign=top><tt>5</tt>
+		<td  align=center valign=top><tt>00100000</tt>
+	<tr>
+		<td  align=center valign=top><tt>$8000 - $9FFF</tt>
+		<td  align=center valign=top><tt>4</tt>
+		<td  align=center valign=top><tt>00010000</tt>
+	<tr>
+		<td  align=center valign=top><tt>$6000 - $7FFF</tt>
+		<td  align=center valign=top><tt>3</tt>
+		<td  align=center valign=top><tt>00001000</tt>
+	<tr>
+		<td  align=center valign=top><tt>$4000 - $5FFF</tt>
+		<td  align=center valign=top><tt>2</tt>
+		<td  align=center valign=top><tt>00000100</tt>
+	<tr>
+		<td  align=center valign=top><tt>$2000 - $3FFF</tt>
+		<td  align=center valign=top><tt>1</tt>
+		<td  align=center valign=top><tt>00000010</tt>
+	<tr>
+		<td  align=center valign=top><tt>$0000 - $1FFF</tt>
+		<td  align=center valign=top><tt>0</tt>
+		<td  align=center valign=top><tt>00000001</tt>
+</table></center>
+
+<p>
+<p>To form the physical address, the three high order bits from the logical address are used to select an MPR.  The 8 bits in the MPR then become the high order bits of the address, thus forming a 21-bit physical address from a 16-bit logical address.
+<p>Here's an example, showing how the address $3F13 is mapped to physical address $1F1F13 using MPR1:
+<p align=center>
+<p align=center><img src="memmap1.jpg" align=bottom border=0>
+<p>
+<p>The 2MB physical address space available to the HuC6280 contains all of the memory-mapped I/O necessary to interface with the other chips, the CD subsystem, and the user (through the HuCard and joystick ports).  Below is the full memory map for the TurboGrafx / PC Engine family.  Each segment is labeled with its corresponding MPR register value ($00 - $FF), a description of the segment's use, its physical address location, and a &quot;chip enable signal&quot; or other descriptive text.  The <em>Develo Book</em> describes the chip enable signal as an external signal that becomes true when that area of memory is accessed.  Currently, it is not known if these signals correspond with any pins or traces available on the system motherboard.  Signals in parentheses, such as (/CEP), represent chip enable signals that are internal to the HuC6280.  The notation /SIGNAME is equivalent to a negative logic signal; that is, the signal is active when it is low instead of high.
+<p>
+<p><center>
+<table border=2 cellspacing=0 cellpadding=5>
+	<tr>
+		<td width=190 align=center valign=top><em>Physical Addresses</em>
+		<td width=118 align=center valign=top><em>Segment #</em>
+		<td width=260 align=center valign=top><em>Description</em>
+		<td width=166 align=center valign=top><em>Chip Enable Signal</em>
+	<tr>
+		<td  align=center valign=top><tt>1FFC00 - 1FFFFF</tt>
+		<td  rowspan=8 align=center valign=middle><tt>FF</tt>
+		<td  align=center valign=top>Reserved for Expansion
+		<td  align=center valign=top>
+	<tr>
+		<td  align=center valign=top><tt>1FF800 - 1FFBFF</tt>
+		<td  align=center valign=top>Reserved for Expansion
+		<td  align=center valign=top>
+	<tr>
+		<td  align=center valign=top><tt>1FF400 - 1FF7FF</tt>
+		<td  align=center valign=top>Interrupt Req./Disable Registers
+		<td  align=center valign=top>(/CECG)
+	<tr>
+		<td  align=center valign=top><tt>1FF000 - 1FF3FF</tt>
+		<td  align=center valign=top>I/O Ports
+		<td  align=center valign=top>(/CEIO)
+	<tr>
+		<td  align=center valign=top><tt>1FEC00 - 1FEFFF</tt>
+		<td  align=center valign=top>TIMER Ports
+		<td  align=center valign=top>(/CET)
+	<tr>
+		<td  align=center valign=top><tt>1FE800 - 1FEBFF</tt>
+		<td  align=center valign=top>PSG Ports
+		<td  align=center valign=top>(/CEP)
+	<tr>
+		<td  align=center valign=top><tt>1FE400 - 1FE7FF</tt>
+		<td  align=center valign=top>HuC6260 Ports
+		<td  align=center valign=top>/CEK
+	<tr>
+		<td  align=center valign=top><tt>1FE000 - 1FE3FF</tt>
+		<td  align=center valign=top>HuC6270 Ports
+		<td  align=center valign=top>/CE7
+	<tr>
+		<td  align=center valign=top><tt>1FC000 - 1FDFFF</tt>
+		<td  align=center valign=top><tt>FE</tt>
+		<td  align=center valign=top>
+		<td  rowspan=3 align=center valign=top>
+	<tr>
+		<td  align=center valign=top><tt>1FA000 - 1FBFFF</tt>
+		<td  align=center valign=top><tt>FD</tt>
+		<td  align=center valign=top>
+	<tr>
+		<td  align=center valign=top><tt>1F8000 - 1F9FFF</tt>
+		<td  align=center valign=top><tt>FC</tt>
+		<td  align=center valign=top>
+	<tr>
+		<td  align=center valign=top><tt>1F2000 - 1F7FFF</tt>
+		<td  align=center valign=top><tt>F9 - FB</tt>
+		<td  align=center valign=top>
+		<td  rowspan=4 align=center valign=middle>/CER
+	<tr>
+		<td  align=center valign=top><tt>1F0200 - 1F1FFF</tt>
+		<td  rowspan=3 align=center valign=middle><tt>F8</tt>
+		<td  align=center valign=top>Base "scratchpad" RAM
+	<tr>
+		<td  align=center valign=top><tt>1F0100 - 1F01FF</tt>
+		<td  align=center valign=top>Stack Page
+	<tr>
+		<td  align=center valign=top><tt>1F0000 - 1F00FF</tt>
+		<td  align=center valign=top>Zero Page
+	<tr>
+		<td  align=center valign=top><tt>1EE000 - 1EFFFF</tt>
+		<td  align=center valign=top><tt>F7</tt>
+		<td  align=center valign=top>Last page of HuCard memory
+		<td  rowspan=9 align=center valign=top>
+	<tr>
+		<td  align=center valign=middle><tt>004000 - 1EDFFF</tt>
+		<td  align=center valign=middle><tt>02 - F6</tt>
+		<td  align=center valign=middle>HuCard storage
+	<tr>
+		<td  align=center valign=top><tt>002000 - 003FFF</tt>
+		<td  align=center valign=top><tt>01</tt>
+		<td  align=center valign=top>
+	<tr>
+		<td  align=center valign=top><tt>001FFE - 001FFF</tt>
+		<td  rowspan=6 align=center valign=middle><tt>00</tt>
+		<td  align=center valign=top>Reset Vector
+	<tr>
+		<td  align=center valign=top><tt>001FFC - 001FFD</tt>
+		<td  align=center valign=top>NMI Vector
+	<tr>
+		<td  align=center valign=top><tt>001FFA - 001FFB</tt>
+		<td  align=center valign=top>TIMER Vector
+	<tr>
+		<td  align=center valign=top><tt>001FF8 - 001FF9</tt>
+		<td  align=center valign=top>IRQ1 Vector
+	<tr>
+		<td  align=center valign=top><tt>001FF6 - 001FF7</tt>
+		<td  align=center valign=top>IRQ2 Vector (for BRK)
+	<tr>
+		<td  align=center valign=top><tt>000000 - 001FF5</tt>
+		<td  align=center valign=top>First page of HuCard memory
+</table></center>
+
+
+</body>
+</html>

@@ -1,0 +1,934 @@
+<html>
+<head>
+<title>Zelda 64 - Translation basics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v3.0
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document); return x;
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+a:active {  text-decoration: none}
+a:hover {  text-decoration: none}
+a:link {  text-decoration: none}
+a:visited {  text-decoration: none}
+-->
+</style>
+</head>
+
+<body bgcolor="#003800" link="#CCCCCC">
+<div align="center"> 
+  <pre>
+
+<img src="zelda.jpg" width="198" height="198"></pre>
+  <center>
+    <p><font color="#009999" face="Arial, Helvetica, sans-serif"><b><font color="#99FF00">N64 
+      ROM translation basics (graphics edit)</font></b></font></p>
+    <p><font color="#009999" face="Arial, Helvetica, sans-serif"><font color="#00CCCC"> 
+      <font size="2">(in example of Zelda: Ocarina of Time - russian translation)</font></font></font></p>
+    <p><font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">(some 
+      compression related tools works <b>only</b> with both Zelda64 games)</font></p>
+    <p>&nbsp;</p>
+  </center>
+</div>
+<div align="center"> 
+  <table width="79%" border="0" height="455" bgcolor="#003800">
+    <tr valign="top"> 
+      <td align="left" height="36" colspan="2"> 
+        <p align="center"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC"><font color="#00FF00"><b><font size="3">First 
+          of all - the tools:</font></b></font></font></font></p>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000" height="11"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://zelda64rus.dotnet.lv/n64gfx20beta.zip"><b><font color="#0099FF">N64Gfx 
+        v2.0</font></b></a> (by EAR_CLOCK, CesarB &amp; Hyllian) - DOS.</font></font></td>
+      <td width="53%" align="right" bgcolor="#000000" height="11"> 
+        <div align="right"><font color="#00CCCC" size="2"><a href="http://www.kinox.org/zelda64br" target="_blank"><font color="#CCCCCC" face="Arial, Helvetica, sans-serif">home 
+          page</font></a></font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td height="45" align="left" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC">    A small program to EXPORT uncompressed graphics from rom, and for IMPORTING it, (edited or not), back to rom.</font><font size="2">
+    Works only with *.png files <i>(output / input)</i>.
+    Also can be used with *.dat files (<font color="#0099FF">Zelda Extractor - <font color="#FFFFFF">see below</font></font>), to export / import *.png's from those *.dat's.</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000" height="19"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://zelda64rus.dotnet.lv/sv165.zip"><b><font color="#0099FF">Sprite 
+        Viewer v1.65</font></b></a> (by Peekin) - DOS</font></font></td>
+      <td width="53%" align="right" bgcolor="#000000" height="19"> 
+        <div align="right"><font size="2" color="#999999" face="Arial, Helvetica, sans-serif"><a href="http://fdwr.tripod.com/snes.htm" target="_blank">home 
+          page</a></font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="47" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">    <font color="#00CCCC">Program to search &amp; view graphics in N64 rom (works with NES, SNES, SEGA, GB, GBC, N64 roms)
+</font><i>    (Also needed to find other info, such as offset, image size, etc - to use with n64gfx).</i>
+    For N64 roms use the following modes to search: <b>linear4, linear8, n64high, n64true</b>
+</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">    This tool shows only uncompressed</font></font> graphics in n64 roms.</font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" bgcolor="#000000" width="47%"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><b><font color="#0099FF">Macromedia 
+        Fireworks v4.0.1</font></b> / <b><font color="#0099FF">Adobe Photoshop</font></b> 
+        - Windows</font></font></td>
+      <td align="right" bgcolor="#000000" width="53%"> 
+        <div align="right"><font color="#00CCCC" size="2"><font color="#CCCCCC" face="Arial, Helvetica, sans-serif"><a href="http://www.macromedia.com" target="_blank">Fireworks</a> 
+          / </font><font color="#00CCCC" size="2"><font color="#CCCCCC" face="Arial, Helvetica, sans-serif"><a href="http://www.adobe.com" target="_blank">Photoshop</a></font></font></font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="33" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC">    Graphics editors, required to edit *.png images (<a href="http://www.corel.com" target="_blank"><font color="#33CCCC"><i>Corel PhotoPaint</i></font></a> seems to work too...)</font><font size="2">
+    Fireworks's native file format is *.png, - this is what n64gfs uses.
+    But - I preffer Adobe Photoshop (from v 5.0 to 7.0 - doesn't matter). This editor is MUCH better and do everything with bitmaps. 
+    I suggest you to use photoshop for correct and easiest editing of png files.</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://zelda64rus.dotnet.lv/hexposure.zip"><b><font color="#0099FF">Hexposure 
+        v0.44b</font></b></a> (by SnowBro) - DOS</font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font color="#00CCCC" size="2"><a href="http://home.sol.no/%7Ekenhanse/nes" target="_blank"><font color="#CCCCCC" face="Arial, Helvetica, sans-serif">home 
+          page</font></a></font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" colspan="2" height="65"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC">    Hex editor.</font><font size="2">
+    I make a translation right in it. Very comfotable tool, I think.
+    Both Zelda has ASCII, so it's not nessesary to make tables.
+    Translate directly in rom. (or if you'll prefer scripts - use it, if you'll figure out, how to make/insert scripts with no bugs in game)</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://zelda64rus.dotnet.lv/Zelda-extractor.zip"><b><font color="#0099FF">Zelda 
+        Extractor</font></b></a> (by _Demo_) - DOS</font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font color="#00CCCC" size="2"><a href="http://www.dextrose.com" target="_blank"><font color="#CCCCCC" face="Arial, Helvetica, sans-serif">home 
+          page</font></a></font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" colspan="2" height="68"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC">    A small tool to UNCOMPRESS all compressed graphics in both Zelda.</font><font size="2"> (also has an add-on - JPG extractor (not included)).
+    (look at dextrose.com for it - it extracts some backgrounds from Zelda (not textures)).
+    It creates 1456 *.dat files for Ocarina Of Time and 2033 *.dat files - for Majora's Mask after extraction.
+</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">    Each DAT file contains all found graphics - compressed and uncompresed</font></font><font size="2">. But compressed graphics are viewable in Sprite Viewer now.
+    The name of *.dat - is the OFFSET of this graphics in rom.</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000" height="17"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://zelda64rus.dotnet.lv/yaz0kit.zip"><b><font color="#0099FF">Yaz0 
+        Kit</font></b></a> (by PSA) - DOS</font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font color="#00CCCC" size="2"><font color="#CCCCCC" face="Arial, Helvetica, sans-serif"> 
+          ?</font></font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC">    I looked for such tool for a looooong time.... But here is it (thanks to _Demo_ and BIG THANKS to author of this tool,</font><font size="2" color="#00CCCC"> if I could contact him...)</font><font size="2">
+    Uncompressor and COMPRESSOR of graphics !!!  WORKS <b>ONLY</b> WITH BOTH ZELDA (Yaz0 - it's a zelda compression style, I guess)
+    <i>Forget about uncompressor - it works similar to zelda extractor, but filename of unpacked data - is just number, so it's impossible to 
+    find needed offset. Use Zelda Extractor only (for uncompress).</i> </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+</font></font><font size="2">    Compressor (Yaz0comp) - works only with UNP files. No extension, just &quot;unp&quot;. I'll explain it below.
+    To compress - just rename *.dat file to &quot;unp&quot; (with no quotes)</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://zelda64rus.dotnet.lv/Romput10.zip"><b><font color="#0099FF">Romput 
+        v1.0</font></b></a> (by Icarus) - DOS</font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font color="#00CCCC" size="2"><a href="http://www.dextrose.com" target="_blank"><font color="#CCCCCC" face="Arial, Helvetica, sans-serif">home 
+          page</font></a></font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="32" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC">    This is a small proggy to insert any data into n64 rom at given offset. Was written for inserting custom intros, but works well in our case, too.</font><font size="2">
+    You'll need this to insert edited and compresed *.dat back into the rom.</font></font></font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="center" height="36" colspan="2" valign="middle"> 
+        <div align="center"> 
+          <p>&nbsp;</p>
+          <p><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC"><font color="#00FF00"><b><font size="3">#1. 
+            Explanation of editing UNCOMPRESSED graphics.</font></b></font></font></font></p>
+          <p><font face="Arial, Helvetica, sans-serif" size="2" color="#00FF00">(there 
+            are fonts, action icon text, items names, some other stuff)</font></p>
+        </div>
+      </td>
+    </tr>
+    <tr valign="middle" align="center"> 
+      <td height="125" colspan="2"> 
+        <div align="left"> 
+          <div align="center"> 
+            <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00FF00"><font color="#FFFFFF">(I'll explain it in example of text, which appears on &quot;Action icon&quot; in game, but we'll translate it to russian here ):
+</font></font></font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00FF00"><b><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+<img src="actionicon.jpg" width="69" height="69" alt="Кнопка &quot;Action Icon&quot;"></font></font></b></font></font></font></pre>
+          </div>
+          <div align="center"></div>
+        </div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Graphics 
+        search : </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font><font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC"> 
+          Sprite Viewer</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td height="920" align="left" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    Take your </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">(<b>not byteswapped</b></font></font><b><font size="2">, version 1.0 USA</font></b><font size="2">) Zelda64 rom.
+    Drag it onto Sprite Vewer (&quot;SV&quot; later) (or in command promt: <font color="#009999"><i><font color="#FFFFFF">sv.exe zelda64.rom</font></i></font>)
+    and start scrolling (PgDown key). (PgUp - to scroll up). Press <b>] </b>or<b> [</b> (it changes width of picture, and scrolling works faster).
+    Press <b>PageDown</b> until you'll reach <b>0x8C4D71</b> offset. 
+    Now choose <b>Linear 4</b> mode <i>(press <b>4</b>)</i> and choose Gray palette <i>(press <b>P </b>several times)</i>.
+    Now press <b>[ </b>to make a width of the image become <b>48</b> pixels. You screen should now look like this:
+
+ <img src="sv1.jpg" width="575" height="352">
+<b><font size="1">               Offset                    Image size (witdh)               Mode                                                                       Palette
+
+</font></b><font size="1"><font size="2">
+To find another graphics - just search in rom like above, in linear4, linear8, n64high, n64true modes only.
+The best quality you can see in Gray palette. In case of n64high and n64true modes - in True color (or high color) palette.
+Here is example of how some inventory items looks like (but we don't need to translate them :)):
+
+ <img src="sv3.jpg" width="575" height="352">
+</font></font></font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Export 
+        graphics from rom: </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">N64Gfx</font></div>
+      </td>
+    </tr>
+    <tr align="left" valign="middle"> 
+      <td height="704" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    Remember offset, image size, mode and palette (</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">0x8C4D71</font></font>, 48, linear 4, gray<font size="2">). Now close SV and open N64gfx (frontend) 
+</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">    Forget about Palmatch tab. It doesn't work at all.</font></font><font size="2">   
+<i>    (Don't forget to put you rom and n64gfx at the same folder)</i>
+    Now fill all fields like this (type you rom name, but 8 symbols in filename is reccomended) :
+
+ <img src="n64gfx.jpg" width="498" height="294">
+
+    See the <b>Rom name with (ext) </b>field? Don't type the whole path to rom, 
+    <i>(like - C:/n64translate/n64gfx/zelda64.rom)</i>. If you'll type all path - n64gfx will do nothing. A small bug...
+    Also in <b>Palette type</b> field almost everytime choose </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><b>builtin igray</b>.</font></font></font><font size="2"> (inverted gray). (<b>Builtin gray</b> seems to be a bit bugged)
+    Also <b>default</b> palette works fine (if you'll need colour image, try to use this palette - as is).
+    Type the first number: <b>48 - </b>in <b>Image size</b> field<b> </b><i>(this is a width of image)</i>, just like you've seen in SV. 
+    Second number - experiment with this.... In our case it's <b>465</b> (lenghts of image). 
+ <i>   (But sometimes this numbers should be divisible to each other).</i>
+    OK - filled all fields, press <b>Run N64gfx</b> button. &quot;<b>action-icon.png</b>&quot; file will be created<i> (<font color="#FF3333"><b>fig</b></font><b><font color="#FF3333">.1</font></b>)</i>
+   <i> 
+    Other n64gfx fields: Type (<b>tile</b> or <b>block</b>) - use tile, and in &quot;size&quot; field type: 48 x 48.
+    Sometimes, when you need to extract an image, say, in size of 32 x 16 - type 32 x 16 in &quot;tile&quot; field and in &quot;image size&quot; field too.</i>  
+
+ </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><img src="action-icon-png1.jpg" width="134" height="139"></font><font size="2">
+<b><font color="#FF3333"> <i>fig. 1 </i></font></b><font color="#FF3333"><i>(fragment)
+                        </i></font></font><font color="#FF3333"><i><font face="Arial, Helvetica, sans-serif"><font size="2"> </font></font><font size="2"><b> </b>   </font></i><font size="2">     </font></font><font size="2">                                      </font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Editing: 
+        </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">Photoshop 
+          (or Fireworks)</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td height="1290" align="left" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">    You can use fireworsk or photoshop. But photoshop is much better, as I said above.
+
+<font color="#FF3333">    <b>Photoshop</b></font> <i>(v5.0, v5.5, v6.0, v7.0 .....)</i>
+    Now - PAINT :), <b>saving original palette</b>.
+    To use original image palette, open </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><b>action-icon.png</b></font></font> in Photoshop, <i>(it exported in <b>Indexed Color </b>mode from rom), 
+   </i> <font size="2">go to <b>Image </b>menu, choose <b>Mode</b> -&gt; <b>Color Table</b>, press <b>Save</b>. Name the file, say, <b>Action.act</b>.
+    Save </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><b>action-icon.png</b></font></font></font> as <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><b>action-rus.png </b><i>(or <b>action-yourlanguage.png</b> :) 
+    (but better save it in *.psd format to use all of Photoshop features during editing).</i><b>
+   </b></font></font><font size="2"> Now, using your photoshop an drawing skills, repaint letters, similar to</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FF3333"><i> <b>fig. 2</b></i></font></font></font>.<font size="2">
+</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+ <img src="action-icon-png22.jpg" width="134" height="139"></font></font><font size="2">  
+</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FF3333"><i><b> fig. 2 </b></i></font></font><font color="#FF3333"><i><font face="Arial, Helvetica, sans-serif"><font size="2">(fragment)</font></font></i></font></font><font size="2">
+
+    It is much comfortable to edit in <b>RGB color </b>mode, which supports layers and other photoshop's features,
+    unavailable in <b>indexed color</b>. <i>(To change colour moge go to: Image -&gt; Mode -&gt; RGB color).</i>
+
+    ...................... (Draw... And don't forget about this light-grey outline around the letters - this will be black outline around this text in game).
+   
+    OK, you finished your painting - now flatten image if you used layers (<i>Layers -&gt; Flatten Image</i> in menu)
+    Next - choose back <b>indexed color </b>mode. <i>(</i></font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><i>Image -&gt; Mode -&gt; Indexed color</i></font></font>)<font size="2">.
+    A small window appers: On <b>Palette </b>tab choose <b>Custom</b>.
+    Another small window appears, this one with palette. Press <b>Load</b> and open saved before <b>Action.act</b> file. 
+    Now press ОК and save file as </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><b>action-rus(yourlanguage).png</b></font></font></font> 
+    <i>(another small window appears - png options. Choose <b>interlaced</b> - <b>none</b> here)</i><font size="2">.
+
+    <b>That's it</b> <b>!</b> Now you can import this edited png file back to zelda rom <font color="#66CCFF">*</font>. 
+
+<font color="#66CCFF"><i>    * It's better to rename now </i></font></font><i><font color="#66CCFF" face="Arial, Helvetica, sans-serif"><font size="2"><b>action-rus.png</b></font></font><font size="2" color="#66CCFF"> to </font><font color="#66CCFF" face="Arial, Helvetica, sans-serif"><font size="2"><b>action2.png </b>or so.</font></font><font size="2" color="#66CCFF">
+      (Sometimes, during import, N64gfx can't see the file, which name is longer than 8 symbols</font><font color="#66CCFF" face="Arial, Helvetica, sans-serif"><font size="2">... DOS shit.....  </font></font><font size="2" color="#66CCFF">
+      8 symbols maximum in file name. I noticed this bug doing import in &quot;builtin igray&quot; mode).
+      In two words - always use DOS-style filenames to prevent problems.</font></i><font size="2">
+    
+    <font color="#FF3333"><b>Fireworks</b></font> <i>(v4.0.1)</i>
+    Create (edit) in fireworks, or open file, preferred before in other editor.
+
+    Image size of the edited file should be exactly like original.
+    If you'll make a mistake even on 1 pixel - n64gfx will do nothing.
+    In our case: image size must be 48 х 465 pixels, 72 dpi.
+
+    Go to <b>File</b> menu, choose <b>Export Preview</b>. Now choose all parameters for export. 
+    I experimented a lot (before I started to use Photoshop for editing).
+    Here is the parameters for the best image quality in game:
+
+<img src="fireworks-options.jpg" width="638" height="471">
+
+<i><b>   <font color="#00CCFF"> PNG 8, Grayscale 16 colors, Dither 100% (sometimes - 0%), Index transparency.</font></b></i>
+ 
+    Press the <b>Export... </b>button, resave file.
+    <i>(or give it another (DOS-style) name, (to be on the safe side)).</i> 
+  </font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Import 
+        graphics back to rom: </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">N64Gfx</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="648" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    Now open <b>n64gfx</b> frontend, <i>(put </i></font><i><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><b>action2.png</b></font></font></font></font></font><font size="2">, <b>N64Gfx</b> and <b>rom</b> into the same folder (guess you know this already :)).</font></font></i><font size="2">
+    </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">Now fill all fields in n64gfx exactly like you did for export, but in <b>Operation</b></font></font><font size="2"> field choose <b>import</b>.
+    And in <b>Image name *.png</b> field - type</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"> the name of your edited png - </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><b><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">action2.png</font></font></b></font>)<font size="2">.</font></font>
+<font size="2">    That's it. Now press this big button: <b>Run N64gfx</b>. We did it :)
+    Now all text on &quot;Action Icon&quot; should be in your language.    
+    (To be on the safe side, open rom in SV, and check all changes at offset, which you already know (0x8C4D71).
+    Should be something like this:
+
+ <img src="sv2.jpg" width="575" height="352">
+</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    Well done. Open your zelda rom in emu (UltraHle for first), then start the game (or load save state) and enjoy:
+
+ <img src="actionicon2.jpg" width="69" height="69">
+
+    Cool, isn't it? :)</font></font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Redrawing 
+        fonts: </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">Sprite 
+          Viewer / N64Gfx / Photoshop (Fireworks)</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="467" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    The main part of translation - redrawing fonts - is similar to Action Icon text.
+    The only thing - letters has a bit blurred edges, that means a bit harder editing...
+
+    In n64gfx, in <b>Type</b> field, you can choose <b>Block</b>, to make exported font easier to edit (much image compact size: see the screenshot below), 
+    but in case of &quot;block&quot; feature you must figure out, what to type in<b> Image Size</b> field. Numbers must be divisible to each other now.
+   
+    There are two fonts in both Zelda: the first one used when you choose player name<font color="#00CCFF">*</font> and for PRESS START phrase<font color="#00CCFF">**</font>.
+    The second one (the main one) - used in dialogues. So, when you translate - you translate this font
+
+    Here is how this second fond looks like (already exported to *.png): <font color="#00CCFF">***</font>
+    
+</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"> <img src="font2.jpg" width="160" height="224"></font></font><font size="2">
+
+    <font color="#00CCFF"><i>
+   * The player name you choose at the beginning of the game appears like &quot;<b><font color="#FFFFFF">0F</font></b>&quot; in hex editor. So you may be unable to declense
+     it in your own language. In case of russian it's impossible to use declension similar to english language.
+
+     Example: you choose the player name <b><font color="#FFFFFF">Anton</font></b>. 
+     In game it will be like &quot;Anton<b><font color="#FFFFFF">'s</font> </b>records&quot;, &quot;Help Anton to save Hyrule&quot;, &quot;Anton<b><font color="#FFFFFF">'s</font></b> house&quot; - [Anton] everywere, + <b><font color="#FFFFFF">'s</font></b> if declension is needed.
+     In hex editor it looks very simple: any name = <font color="#FFFFFF"><b>0F</b></font> or <b><font color="#FFFFFF">0F's</font></b> if declension. So take into consideration your own language when translating.
+     We just replaced the player name to <b><font color="#FFFFFF">Link</font></b> (guess you know who he is :)) and have no problems with names at all.
+     The name choosen at the beginning means just a name of game file you play with (in our russian translation).
+
+ **  To search PRESS START phrase use relative search feature in hexposure (F6).
+
+***</i></font> </font><i><font color="#00CCFF"> here is a n64gfx options for this main font (dialogue font)</font></i><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#0099CC"><i><font color="#00CCFF">:</font></i></font></font></font><font size="2"><i>
+<font color="#00CCFF">
+      </font></i><font color="#00CCFF">offset - <b>0x906f70</b>, mode - <b>linear 4</b>, type - <b>block</b>, size - <b>16 x 16</b>, image size - <b>160 x 224</b>, palette type - <b>builtin igray</b></font>  
+</font></font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="105" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">    Repaint letters, taking your alfabet into consideration.
+    I painted them like there are in russian/eglish keyboard (almost). But I guess that you know, what english letter change to your ones.
+
+    IMPORTANT:
+    Repaint letters, paying attention at their WIDTH. 
+    You must paint new letter EXACTLY with the width of english letter that you replace.
+    If you don't do this - spaces between letters will be very small or very big in game and text will look crappy and hard to read.
+
+    Theorically, if you know where to find table of letter's width in rom and how to change it - this will be very good.
+    I don't know how. If you'll figure it out - let me know, please.
+</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Translation: 
+        </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">Hexposure</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="667" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    When both font are repainted and inserted back to rom - we can start a translation, at last.
+    Open Hexposure <font color="#66CCFF">*</font>, open zelda rom, and search for text.
+    Looks kike this:
+
+<img src="hex1.jpg" width="652" height="359">
+
+    I guess that you know hot to use hexposure. If no - grab some tutorials, docs, etc - at <a href="http://www.zophar.net" target="_blank"><b><font color="#CCCCCC">zophar's domain</font></b></a> or <a href="http://www.romhacking.org" target="_blank"><b><font color="#CCCCCC">romhacking.org</font></b></a>    
+    Translate in right column. For example, &quot;30 Rupees&quot; you'll translate like .... hm, don't know your language :)
+    Type english letters, paying attention on how you repainted you font. (in hexposure translated text will look like
+    some abracadabra in english (like <b>dfvuwbsjsb</b> ....) bla bla.... But it'll appear on your language :) 
+    
+    (If you know the easier way, and translating using scripts, whatever - you'll translate like you prefer)
+    
+    Translate..................
+
+    Try not to move some pointers, except of &quot;next line&quot; pointer (01), &quot;end text block&quot; pointer (04) , &quot;end of dialogue&quot; (02) and
+    other similar pointers.
+
+    Result of translation looks like <a href="http://zelda64rus.dotnet.lv/screenshots.htm" target="_blank"><font color="#CCCCCC">this</font></a> or <a href="http://zelda64rus.dotnet.lv/downloads.htm" target="_blank"><font color="#CCCCCC">this</font></a> :)
+
+    In the middle column - Hex data (type pointers numbers here). In left column is offset.
+
+    Some words about pointers (all that I know):
+    
+    When text is coloured - there are 41 (red), 44 (blue), 43 (yellow, if i remember correct), and so on. It's not too difficult to figure it out.
+    End of any color - 40. 
+    Example: &quot;<b>You got <font color="#FF0000">recovery heart</font></b>&quot; 
+    In hexposure it looks like this: &quot;You got <font color="#99FF00">.A</font>recovery heart<font color="#CCFF00">.@</font>&quot; ( .A = red colour (05 41), .@ = end of any colour (05 40) )
+
+    There are tons of pointers which explains to game: 
+    a speed of displaying text, centering text, text background - colour and transparency, etc, etc, etc....
+    I try to leave them on their places, otherwise the game may hang or display some garbage instead of text or text background.
+    But I'm not experienced with pointers :)
+<font color="#66CCFF"><i> 
+   * You can use another hex editors if you preffer them more than hexposure, such as Thingy or Hex Workshop. You choose....</i></font>
+</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="center" height="82" colspan="2" valign="middle"> 
+        <div align="center"> 
+          <p>&nbsp;</p>
+          <p><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2" color="#00CCCC"><font color="#00FF00"><b><font size="3">#2. 
+            Explanation of editing COMPRESSED graphics:</font></b></font></font></font></p>
+          <p>&nbsp;</p>
+        </div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><font size="3"><b>Ucompressing 
+        graphics: </b></font></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">Zelda 
+          Extractor</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="129" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    There are lot of graphics in Zeldas that are compressed. There are some stuff in subscreens (titles, etc), places names at the center of screen
+    (appears when you entering corresponding area in game (<a href="http://zelda64rus.dotnet.lv/kokiri-rus-compressed.jpg" target="_blank"><font color="#CCCCCC">example</font></a></font><font size="2">), bosses names, etc...
+    It is impossible to edit it like explained above, but now you can do this :)
+    Take your Zelda rom, take Zelda Extractor proggy, put it into the same folder.
+    Now in command line <b>only </b>(or make a *.bat file) type: <b>zextract zelda64.rom</b>
+    Extractor will think a bit... and will create 1456 *.dat files in your folder. This is it. All compressed graphics, but now it's uncompressed.
+    Filename of *.dat = offset, where this data resides in rom. You'll need this offsets later.    
+
+    Ok, now the most annoying part - finding needed graphics and sorting it ...</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Searching 
+        : </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">Sprite 
+          Viewer</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td height="456" align="left" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    Same like you search directly in rom (like uncompressed, explained above), but now you'll need to check in SV all this 1456 files !
+    I spend 2 days for that :-/    
+    But - I'll make you life easier. Here there are all of dat's that you may need for redrawing. Thanks to me :p
+
+
+<b><font color="#00CCFF">Dat files &amp; n64gfx options - for Ocarina of Time</font></b>
+--------------------------------------------------------------------------
+
+<b><font color="#FF3300">BIG PLACES NAMES</font></b> (appears at the center of screen when you enter this area):
+
+There are files at<b> <font color="#FF3300">6.75 kb</font></b> (6.912 bytes)
+(I found <b>57</b> of them. I think that's all). 
+Just sort all dats by size - and you'll find them easily).
+
+<font color="#FFFF00">n64gfx export/import stuff for all this names</font>:
+
+<font color="#FFFF00"><b><font color="#00CCFF">0x000d80
+tile - 144 x 24
+size - 144 x 24
+linear8
+builtiin igray</font></b></font>
+
+
+<font color="#FF3300"><b>MAIN GAME MENU - <font color="#FFFFFF">1313830.dat</font></b></font>
+==============================
+<font color="#FFFF00">n64gfx stuff for some of main menu parts:</font>
+==============================
+
+<font color="#FFFF00">"options" submenu:</font>
+------------------------------
+
+<font color="#FFCC00">Sound
+********<font color="#FFFFFF">
+</font></font><font color="#00CCFF"><b>0x008c78
+tile - 64 x 64
+size - 64 x 12
+mode - linear8
+palette - igray</b></font>
+<font color="#FFCC00">
+Check Brightness
+*********************</font>
+<font color="#00CCFF"><b>0x0349e1
+tile - 96 x 96
+size - 96 x 14
+mode - linear8
+palette - igray</b></font>
+
+<font color="#FFCC00">Name?
+********</font>
+<font color="#00CCFF"><b>0x032700
+linear8
+tile 56 x 56
+size 56 x 16
+</b></font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#00CCFF"><b>palette - igray</b></font></font></font><font color="#00CCFF"><b>
+</b></font>
+
+<font color="#FFFF00">main menu stuff (when selecting a filename):</font>
+---------------------------------------------------------------
+
+<font color="#FFCC00">Text in menu (annotations, confirmations, etc)
+*****************************************************</font>
+<font color="#00CCFF"><b>0x02b000
+linear8
+tile 128 x 128
+size 128 x 238
+igray</b></font>
+
+<font color="#FFCC00">A-Decide * B-Cancel
+************************</font>
+<font color="#00CCFF"><b>0x034080
+linear8
+tile - 144 x 144
+image size - 144 x 16
+igray</b></font>
+
+<font color="#FF3300"><b>ALL COMPRESSED DATA IN SUBSCREENS - <font color="#FFFFFF">85d840.dat</font></b></font>
+</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">====================
+<font color="#FFFF00">n64gfx stuff for subscreens:</font>
+====================</font></font><font size="2">
+
+<font color="#FFCC00">To Map
+To Equipment
+To Quest Status
+To Select Item
+****************</font>
+<font color="#00CCFF"><b>linear8
+0x004900
+Tile 128 x 128
+Size 128 x 63
+Builtin Igray</b></font>
+
+<font color="#FFCC00">Would you like to save/saved
+*********************************</font>
+<font color="#00CCFF"><b>linear8
+0x006880
+Tile 152 x 152
+Size 152 x 32
+Builtin Igray</b></font>
+
+<font color="#FFCC00">To Equip
+**********</font>
+<font color="#00CCFF"><b>linear8
+0x003c35
+Tile 56 x 56
+Size 56 x 16
+Builtin Igray</b></font>
+
+<font color="#FFCC00">To Decide
+************</font>
+<font color="#00CCFF"><b>linear8
+0x003fbf
+Tile 64 x 64
+Size 64 x 14
+Builtin Igray</b></font>
+<font color="#FFCC00">
+To Play Melody
+******************</font>
+<font color="#00CCFF"><b>linear8
+0x004380
+Tile 80 x 80
+Size 80 x 16
+Builtin Igray</b></font>
+
+<font color="#FFCC00">Yes - No
+**********</font>
+<font color="#00CCFF"><b>linear8
+0x007b80
+tile 48 x 48
+Size 48 x 48 ? (forgot this)
+Builtin igray</b></font>
+
+
+<font color="#FFCC00">Subscreen titles (those emboss things) 
+- I spent whole day to redraw them and to make them readable in game.
+I just used "Pragmatica" font, no emboss, black color 
+(in UltraHle it looks good, but in PJ64 - it's transparent, no black....)</font>
+
+<font color="#FFCC00">EQUIPMENT
+MAP
+SELECT ITEM
+QUEST STATUS
+SAVE
+********************
+</font><font color="#00CCFF"><b>linear8
+0x008280
+tile 80 x 80
+size 80 x 280
+Default</b></font>
+
+<font color="#FFCC00">Dungeon's names in map subscreens
+*******************************************</font>
+<font color="#00CCFF"><b>linear8
+0x000000
+tile 96 x 96
+size 96 x 158
+Builtin igray</b></font>
+
+
+<font color="#FF3300"><b>GAME OVER, continue playing? - <font color="#FFFFFF">856b90.dat</font></b></font>
+<font color="#FF3300"><b>
+ZELDA LOGO SCREEN, (c) nintendo 1998, the legend of, ocarina of time - <font color="#FFFFFF">11cd140.dat</font></b></font>
+
+<font color="#FFCC00">n64gfx stuff for logo:
+***********************</font>
+<font color="#00CCFF"><b>0x000300
+tile - 160x160
+size - 160x160
+mode - n64true
+palette - default</b></font>
+
+<font color="#FFCC00">n64gfx stuff for &quot;(c) 1998 Nintendo&quot;: 
+****************************************</font>
+<font color="#00CCFF"><b>0x019400
+tile - 128x128
+size - 128x16
+mode - linear8
+palette - builtin igray</b></font>
+
+<font color="#FF3300"><b>ALL BOSSES NAMES (that appears, when you first enter boss room in dungeon):</b></font>
+
+<font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FF3300"><b>Gohma: </b><font color="#FFFFFF">E21700.dat</font><b></b></font></font></font><font color="#FF3300"><b>
+</b></font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FF3300"><b>Dodongo: </b><font color="#FFFFFF">De9480.dat</font><b></b></font></font></font><font color="#FF3300"><b>
+Barinade: </b><font color="#FFFFFF">F8ab00.dat</font><b>
+</b></font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FF3300"><b>Phantom Ganon: </b><font color="#FFFFFF">Effc00.dat</font><b></b></font></font></font>
+<font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FF3300"><b>Volvagia: </b><font color="#FFFFFF">Fd15b0.dat</font></font></font></font><font color="#FF3300"><b>
+</b></font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FF3300"><b>Morpha: </b><font color="#FFFFFF">1057590.dat</font><b></b></font></font></font><font color="#FF3300"><b>
+Bongo Bongo: </b><font color="#FFFFFF">10fd5d0.dat</font><b>
+</b></font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FF3300"><b>Twinrova sisters: </b><font color="#FFFFFF">10c3be0.dat</font><b></b></font></font></font><font color="#FF3300"><b>
+</b></font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FF3300"><b>Ganondorf: </b><font color="#FFFFFF">10f6600.dat</font><b></b></font></font></font><font color="#FF3300"><b>
+Ganon: </b><font color="#FFFFFF">11f9600.dat</font><b>
+</b><b>
+</b></font><font color="#FFCC00">n64gfx for bosses: also linear8, builtiin igray. 
+I haven't edit them now (because if you edit it's name, then load save to check your
+changes in UltraHle - It's name still appears in english. Don't know why, maybe this data (bosses names) is stored in save files.
+I only made GOHMA, the first boss - but I started the game from the begining to check changes - it works.
+Maybe PJ64 helps to check this, but I didn't try it yet... </font>
+<font color="#FF3300"><b>
+THE FIRST SCREEN IN GAME (NINTENDO 64) - <font color="#FFFFFF">13120f0.dat</font></b></font>
+
+<font color="#FFCC00">n64gfx stuff for the first screen:
+***********************************</font>
+<font color="#0099FF"><b><font color="#00CCFF">0x000192
+linear8
+tile - 192x32
+size - 192x32
+Builtin igray</font></b></font>
+<font color="#FF3300"><b>
+&quot;NAVI" (at C-UP button) - <font color="#FFFFFF">13344C0.dat </font></b></font>
+(search in Linear4 mode).
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+That's all for Ocarina of Time (there are some other small stuff, that doesn't appear in emulator (check *.dat with main menu stuff).
+
+I don't know any for Majora - try to ask <a href="mailto:leha@inetcomm.ru">Alex</a> (he translates Majora. I have nothing to do with Majora)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ 
+Ok...
+
+Now you have all needed stuff for editing compressed graphics. Be sure to check all described above in SV.
+
+  Looks like this in SV, for example (places names):  
+ <font size="1"><font size="2"> <img src="compessed-places-sv.jpg" width="575" height="352">
+    
+   So, for full translation of Zelda:OoT you may need this: <font color="#00CCFF">*</font>
+    
+    - places names at the center of the screen
+    - main geme menu <i>(buttons &amp; text)</i>
+    - Nintendo64 title at the beginning
+    - main Zelda logo, if you want... <font color="#00CCFF">**</font>
+    - &quot;Navi&quot; on C-up button (appears when she wants to tell you something) <font color="#00CCFF">***</font>
+    - some stuff in subscreens
+    - bosses names (appears when you first enter the boss room)
+    - &quot;GAME OVER&quot; <i>(stores like shit (</i></font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font size="1"><font size="2"><i>broken onto 4 parts</i></font></font></font></font>)<font size="2"><i> in *.dat) </i>   
+    - &quot;The End&quot; , Nintendo logo at the end of game, other small stuff.
+
+      <font color="#00CCCC"><i><font color="#00CCFF">* for Majora's Mask - about the same, but there are more compressed data in Majora. 
+        (all items &amp; masks names, for example</font></i></font><font color="#00CCFF"><i> - are compressed)</i></font>.
+<i>    <font color="#00CCFF"> ** </font></i></font><i><font color="#00CCFF" face="Arial, Helvetica, sans-serif"><font size="2"><font size="1"><font size="2">if you change the logo, the game may totally hang when entering Thieves Hideout in Gerudo Fortress. I don't know, why...</font></font></font></font></i><font size="2">
+   <font color="#00CCFF"><i> *** and in this case, tha game may totally hang at the beginning, when Zelda logo loads... Very strange...</i></font><i><font color="#00CCFF">.</font></i>
+
+        (all game hangs with logo &amp; navi (and also in case of uncorrect editing of compressed graphics
+         means that a black screen appears during gameplay - and that's it)
+
+        (short appearance of black screens in game means that needed graphics being uncompressing by the game - this is ok)
+
+    
+    OK, let's export needed graphics from *.dat's for edit.
+</font></font></font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Export 
+        from *.dat file: </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">N64Gfx</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="47" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">    Same like from rom, but only type the name of *.dat in </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><b>Rom name with (ext) </b>field</font></font> in N64Gfx.<font size="2">
+    Fill all fields with info, found above (or manually in SV :)</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Editing: 
+        </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">Photoshop 
+          (Fireworks)</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="63" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    The same, like uncompressed. Same *.png art. Photoshop or Fireworks.
+    Some important notes for editing:
+
+    - File size of edited *.png <b>can </b>be <b>a bit bigger</b><b></b>, than original
+    - <b>always</b> use original palette (palette from extracted PNG (save *.act file in photoshop, remember?)
+    - try to edit VERY accurate, to make your new painting looks like an original png, as closer as possible
+    - number of pixels in your edited png <b>must</b> be less than in original (or equal). Otherwise the game may hang.
+      
+    
+    Ok, now you edited all *.png's, extracted from *.dat's. Next step - import it back to *.dat.</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Importing 
+        into *.dat file</font></b></font></font></font><font size="3">: </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">N64Gfx</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="64" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    Same N64Gfx. <b>Import <font color="#66CCFF">*</font></b> instead of export ... *.<b>dat</b> instead of rom ...
+<i><font color="#66CCFF">   * png filename - DOS-style. (max. 8 symbols)</font></i>
+      </font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">COMPRESSING 
+        *.dat's </font></b></font></font></font><font size="3">: </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">Yaz0 
+          Kit</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="63" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    The main part in editing compressed data in Zelda. 
+    Unzip <b>Yaz0kit.zip</b>. There are 4 files in it:
+
+    - <b>Yaz0unp.exe </b><i>(unpacker, similar to Zelda Extractor, don't use it, forget it, delete it if you want).
+</i>    -<font color="#FF6633"> <b><font color="#FFFF33">Yaz0comp.exe</font></b></font> <i>(yes, this is a COMPRESSOR, finally...). </i>   
+    - <b>unp </b>file <i>(example of uncompressed data. Just one of 1456 files. Delete it).</i>
+    - <b>!out.org </b>file <i>(example of compressed data. Just compressed *.unp file (*.dat file). Delete it).   </i>
+
+    1. Take your edited *.dat. Check it in SV to make sure everything is ok.
+    2. Put it in the same folder where Yaz0 kit is. 
+    3. Rename your edited *.dat to UNP file. Just <b>unp</b>, with no extension.
+    4. Run <b>Yaz0comp.exe</b>. <font color="#FFFF33"><b>!out</b></font> file will be created.
+
+    This <font color="#FFFF33"><b>!out</b></font> - this is your edited and compressed *.dat, ready to be inserted into rom ! 
+    In simple words - this <b>!out</b> is just the piece of rom data, exactly like it is in rom
+    But it EDITED now :) <font color="#00CCFF">*</font>.
+    
+    <font color="#00CCFF">*</font> <b><font color="#00CCFF"><i>VERY IMPORTANT !!! :</i></font></b>
+
+<font color="#00CCFF"><i>    <b>!out</b> filesize <b>MUST</b> be <b>SMALLER</b> than original !!! (or equal, but better if smaller).
+    
+    ( compress original <b>*.dat</b> to have original <b>!out</b> file, so you can compare it's size with edited <b>!out</b> ).</i></font>
+
+    OK, now - the last step: Insertion into rom.</font></font></pre>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Inserting 
+        &quot;!out&quot; file into rom: </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">Romput</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td align="left" height="63" colspan="2"> 
+        <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    Take <b>Romput 1.0</b> program.
+    Put it into the new folder, put your rom and your edited !out<font color="#00CCFF">*</font> file into this folder too.
+    Take the name of *.dat file you edited/compressed (to know the offset) . 
+
+<i>    <font color="#00CCFF">* You may rename <b>!out</b> file to another name, whatever you want (but better DOS-style name, I think).</font></i>
+ 
+    Run Romput. Looks very simple. (note - to load files in in, use buttons: &quot;load rom&quot;, &quot;load bin&quot;)
+    If you didn't - romput will do nothing (same bug like in rom filename in N64gfx, but vice versa :) )
+    
+    Here how it looks like:
+
+ <img src="romput-screen.jpg" width="270" height="240"></font></font>
+</pre>
+        <div align="left"> 
+          <pre><font color="#00CCFF"><i><font face="Arial, Helvetica, sans-serif" size="2"><b>    ROM - </b>rom name<b>
+    BIN - </b></font></i><font face="Arial, Helvetica, sans-serif" size="2"><b><i> </i></b><i>!out file</i></font><i> 
+<b><font face="Arial, Helvetica, sans-serif" size="2">    ADR - </font></b><font face="Arial, Helvetica, sans-serif" size="2">offset (*.dat filename)</font></i></font>
+    
+     <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">Now ... press <b>Attach! </b>button.<b>
+
+</b>    <b><font color="#FF3300">You just finished to edit some of compressed graphics in Zelda64. Congratulations!</font></b></font></font>
+
+<font color="#FFFFFF" face="Arial, Helvetica, sans-serif">    Open rom in emulator, and see how you work looks like.
+    If you're lucky and there will be no hangs in game, you can continue your work to make it 
+    looks like similar to what we do, translating it to russian.</font>
+</pre>
+        </div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td width="47%" align="left" bgcolor="#000000"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b><font size="3">Patch 
+        creation : </font></b></font></font></font></td>
+      <td width="53%" align="right" bgcolor="#000000"> 
+        <div align="right"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFF00">Tools:</font> 
+          <font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">IPS 
+          &amp; APS patching tools (</font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://www.dextrose.com" target="_blank"><font color="#CCCCCC">dextrose</font></a></font></font></font><font face="Arial, Helvetica, sans-serif" size="2" color="#CCCCCC">)</font></div>
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td colspan="2" align="left"> <font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFF33"><b></b></font></font></font> 
+        <div align="right">
+          <div align="left"> 
+            <pre><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">
+    Now some words about patch creation.
+
+    If you didn't edit compressed stuff, and just translating text, (and have only changed uncompressed graphics) - use IPS patches
+    (Use &quot;<font color="#33FFFF"><a href="http://zelda64rus.dotnet.lv/downloads.htm" target="_blank"><font color="#66CCFF">Smart IPS</font></a></font>&quot; proggy for this. NOT <font color="#66FFFF">ips.exe</font> which you may have).
+
+    If you started to edit compressed graphics - always use APS (advanced patching system) patches.
+    (Use </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#33FFFF"><a href="http://zelda64rus.dotnet.lv/downloads.htm" target="_blank"><font color="#66CCFF">xPSapply</font></a></font></font></font></font><font size="2"> (to apply) and </font><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#33FFFF"><a href="http://zelda64rus.dotnet.lv/downloads.htm" target="_blank"><font color="#66CCFF">makeAPS</font></a></font></font></font></font><font size="2"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"></font></font> (to make patches)). </font></font></font></pre>
+          </div>
+        </div>
+        </td>
+    </tr>
+  </table>
+  <p><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2">That's 
+    it. Enjoy.</font></font></font></font></font></font></p>
+  <p>&nbsp;</p>
+  <p><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFFFF"><b>Thanks 
+    to:</b></font></p>
+  <pre><font face="Arial, Helvetica, sans-serif" color="#00FF00" size="2">Hyllian</font><font face="Arial, Helvetica, sans-serif" color="#FFFFFF" size="2"> (for his great help at the beginning, for n64gfx 2.0)
+<font color="#00FF00">_Demo_</font> (for Zelda Extractor, for Yaz0kit &amp; explanations)
+<font color="#00FF00">PSA</font> (for Yaz0kit !!!)
+<font color="#00FF00">Lugia_13gr</font> (for asking me to translate this tutorial from russian to english)
+<font color="#00FF00">Sergey &quot;Refresh&quot; Kluchnikov</font> (for translating Zelda:OoT with me)
+<font color="#00FF00">Seregak</font> (for his great help at all and for founding bugs in Zelda64 translation)
+<font color="#00FF00">Alex</font> (for translating Zelda:MM)
+
+To authors of all programs described here.
+
+<b>Also:</b>
+
+<a href="http://www.zophar.net" target="_blank"><font color="#00FF00">Zophar's domain</font></a>
+<a href="http://www.dextrose.com" target="_blank"><font color="#00FF00">Dextrose</font></a>
+<a href="http://www.romhacking.org" target="_blank"><font color="#00FF00">Romhacking.org</font></a>
+<a href="http://romov.net" target="_blank"><font color="#00FF00">Romov.net</font></a>
+<font color="#00FF00"><a href="http://www.shedevr.ru" target="_blank"><font color="#33FF33">Shedevr</font></a>
+</font></font></pre>
+  <p><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font size="2"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"></font></font></font></font></font></p>
+  <p>&nbsp;</p>
+  <p><font face="Arial, Helvetica, sans-serif" color="#FFFFFF" size="2"><i>Tutorial 
+    by</i></font><font color="#FFFFFF"><i><font face="Arial, Helvetica, sans-serif" size="2"> 
+    <a href="mailto:ap_2@mail.ru"><b><font color="#CCCCCC">Anton</font></b></a></font></i></font></p>
+  <p><font face="Arial, Helvetica, sans-serif" color="#00FF00"><a href="http://zelda64rus.dotnet.lv"><font color="#33FF00" size="2">zelda64rus.dotnet.lv</font></a></font></p>
+  <p><font color="#FFFFFF"><i><font face="Arial, Helvetica, sans-serif" size="1">30.07.2002</font></i></font></p>
+</div>
+</body>
+</html>

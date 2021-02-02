@@ -1,0 +1,385 @@
+
+ EMS Action Replay Plus notes
+ by Charles MacDonald
+ WWW: http://cgfm2.emuviews.com
+
+ Table of contents
+
+ 1.) Overview
+ 2.) SH-2 memory map of ARP cart
+ 3.) BIOS functions
+ 4.) Comms Link details
+ 5.) Miscellaneous
+ 6.) Comms Link pinout
+ 7.) Miscellaneous
+ 8.) Acknowledgements
+
+ [05/11/03]
+ - Fixed memory map description
+ - Added information about ID register
+ [12/04/02]
+ - Initial revision
+
+ ----------------------------------------------------------------------------
+ Overview
+ ----------------------------------------------------------------------------
+
+ The following information applies to the EMS Action Replay Plus, but may
+ also work with earlier versions of the EMS cartridges and the original
+ Datel Action Replay device.
+
+ For convenience, I'll refer to the various cheat cartridges as follows:
+
+ PAR  = Datel Pro Action Replay
+ GS   = Interact GameShark
+ ARP  = EMS Action Replay Plus
+
+ ----------------------------------------------------------------------------
+ SH-2 memory map of ARP cart
+ ----------------------------------------------------------------------------
+
+ The cartridge has 256K of EPROM and 4 megabytes of on-cart DRAM. It is
+ mapped into most of the A-Bus space ($22000000-$25FFFFFF), with the CS2
+ region devoted to the CD-ROM interface.
+
+ [A-Bus CS0 Region]
+ $22000000-$2207FFFF : EPROM (256K, mirrored every 256K)
+ $22080000-$220FFFFF : Always returns $FFFF [1]
+ $22100000-$2217FFFF : Always returns $FFFF [2]
+ $22180000-$221FFFFF : Always returns $FFFF [3]
+ $22200000-$223FFFFF : Always returns $FFFF (writes do nothing)
+ $22400000-$227FFFFF : 4MB of on-cart RAM
+ $22800000-$22FFFFFF : Always returns $FFFF (writes do nothing)
+ $23000000-$2327FFFF : Always returns $FFFF (writes do nothing)
+ $23280000-$233FFFFF : Always returns $FFFD (writes do nothing)
+ $23400000-$235FFFFF : Always returns $FFFF (writes do nothing)
+ $23600000-$237FFFFF : Always returns $FFFD (writes do nothing)
+ $23800000-$239FFFFF : Always returns $FFFF (writes do nothing)
+ $23A00000-$23BFFFFF : Always returns $FFFD (writes do nothing)
+ $23C00000-$23E7FFFF : Always returns $FFFF (writes do nothing)
+ $23E80000-$23FFFFFF : Always returns $FFFD (writes do nothing)
+ [A-Bus CS1 Region]
+ $24000000-$24FFFFFF : Always returns $FF5A (writes do nothing) [4]
+ [A-Bus Dummy Region]
+ $25000000-$257FFFFF : Always returns $FFFF (writes do nothing)
+ [A-Bus CS2 Region]
+ $25800000-$258FFFFF : CD-ROM interface
+
+ 1. Any value written to bits 7-0 of each word is output to the Comms Link
+    card.
+
+ 2. Bit 0 of each word returns the status flag from the Comms Link.
+
+ 3. Bits 7-0 of each word return the current byte being output by the
+    Comms Link card to the ARP.
+
+ 4. Early versions of the ARP cart return $5A which indicates that 1MB of
+    memory is present. This prevents 4MB games from working, which expect
+    an ID of $5C. The ARP hardware was revised later on to fix the problem.
+
+    Games only access the ID register at $24FFFFFF.
+
+ The EEPROM has the Action Replay code and data in the first 64K, and the
+ remaining 192K is for compressed save files and code entries.
+
+ The Comms Link registers are officially located at the following addresses:
+
+ $02080001 - Data output to Comms Link
+ $02100001 - PC busy status flag in bit 0
+ $02180001 - Data input from Comms Link
+
+ They are mirrored at all odd addresses. The even addresses in the Comms Link
+ register range always returns $FF, and the high 7 bits of the status
+ register also return $FE.
+
+ The comms link port registers are accessed at $22xx0001 which is the
+ non-cached region of the SH-2 address range. The program itself runs
+ out of $02000000-$0203FFFF.
+
+ My cart uses two Atmel AT29C010A-12PC flash memory chips. Anyone willing to
+ check their PAR/GS/ARP cart to see what type of flash is used?
+
+ ----------------------------------------------------------------------------
+ BIOS functions
+ ----------------------------------------------------------------------------
+
+ The ARP uses hacked software from the original PAR cartridge. There seem
+ to be a few places where one function was patched out with another one,
+ and there are bits of unreachable or nonsense code that have no effect.
+ I suspect the original PAR has a more complete set of functions available.
+
+ The software communicates through the comms link using the following
+ routines:
+
+ exchange byte - Send a byte to the PC, and receive a byte from it.
+
+ send long     - Send four bytes to the PC. It internally calls the exchange
+                 byte routine four times, ignoring the values read.
+
+ read long     - Read four bytes from the PC. It internally calls the
+                 exchange byte routine four times, sending zero each time.
+
+ For longword data, the first byte exchanged has bits 31-24, the next byte
+ is bits 23-16, then 15-8, and the last byte is bits 7-0.
+
+ Every once in a while (probably on each frame) a routine is called which
+ checks the comms link port to see if the PC wants to talk to it.
+
+ It will exchange the value 'I' and expect 'D' back, then exchange 'N' and
+ expect 'O' back. It will then exchange another byte (sending zero), and
+ compare this byte to a set of possible function numbers. If the byte does
+ not match anything, the function returns.
+
+ Function $01: Download memory
+
+ It does the following:
+
+ 1. Write longword in SH-2 register R9 to the PC.
+ 2. Read two longwords, address and length, from the PC.
+ 3. If length is zero, exchange bytes 'O' and 'K', then return.
+    It does not care what the PC sends back.
+ 4. Exchange data bytes from specified memory addresses until all memory
+    has been read. The SH-2 can hang if it reads invalid address.
+ 5. Exchange a single byte, which is a checksum.
+ 6. Go to step 2 and repeat.
+
+ For a single download, you'd send a length of zero and any address the
+ second time around. The checksum is generated by adding each byte to
+ an 8-bit accumulator. (so it wraps from $FF to $00)
+
+ This function checks to see if the address range specified would read from
+ the first 256K of the cartridge address space. If this is true, then it
+ always dumps data from $24000000 onwards. I suppose this is to prevent
+ someone from dumping the software, but both Datel and EMS include the
+ Action Replay software in their upgrade programs anyway. You can patch
+ offsets $00CA22 to $00CA5F with NOP to get around this problem.
+
+ Function $02: Unknown
+
+ It seems to write the constant value $02 to address $00000001.
+
+ Function $03: Unknown
+
+ Reads five longwords from the PC with the following format:
+
+ Longword 1 - Value
+ Longword 2 - Ignored
+ Longword 3 - Ignored
+ Longword 4 - Ignored
+ Longword 5 - Address
+
+ It then does the following:
+
+ Offset = $06000E00 + (Address >> 16) << 1;
+ *(Offset) = Value
+ Offset = (Offset + 1) & ~3;
+ *(Offset) = (Address & 0xFFFF);
+
+ Function $04: Unknown
+
+ Reads five longwords from addresses $290000, $290004, $290008, $29000C, and
+ $290010, and sends them to the PC.
+
+ Function $05: Unknown
+
+ Exchanges zero with the PC, and writes the byte it received to
+ address $060FFE20.
+
+ Function $06: Unknown
+
+ Reads two longwords from the PC and writes them to addresses
+ $060FE000 and $060FE000.
+
+ Function $07: Unknown
+
+ Writes contents of SH-2 register R9 to PC, exchanging zero each time.
+
+ Function $08: Write byte to memory address
+
+ Reads a longword from the PC (address to write to) and exchanges zero,
+ using the value it receives to write as a byte value to the specified
+ address.
+
+ Function $09: Upload (and execute) data
+
+ 1. Read longword from the PC (address to load data)
+ 2. Read longword from the PC(data length)
+ 3. Exchange byte (if $01, JSR to load address after loading, else do nothing)
+ 4. Read data bytes from PC until all data was transferred
+
+ When transferring data, the first byte exchanged is the value of SH-2
+ register R9, and all subsequent bytes are the previous byte sent to the PC.
+
+ Assuming the stack isn't modified, the program called by this function
+ could end with an RTS and return to the PAR software.
+
+ ----------------------------------------------------------------------------
+ Comms Link details
+ ----------------------------------------------------------------------------
+
+ The Comms Link is an ISA card. It has two jumpers which map the card to the
+ following I/O port areas:
+
+ JP1 JP2    Ports
+ -------    ---------
+ On  On     $300-$303
+ On  Off    $310-$313
+ Off On     $320-$323
+ Off Off    $330-$333
+
+ It does not use A0 for address decoding, so for example ports $321 and $323
+ are mirrors of ports $320 and $322. The Datel and EMS software only use
+ even addresses. Most cards seem to ship with ports $320-323 selected by
+ default, so I'll use that port range in my descriptions.
+
+ The interface between the Comms Link and PAR consists of an 8-bit
+ bidirectional data bus, and two unidirectional control lines for handshaking.
+
+ The 8-bit data bus is mapped to port $320 which is the data port. One of
+ the two control lines is mapped to bit 0 of port $322, which is the status
+ port. The other one is connected to the PAR through the Comms Link cable.
+ I'll call these the PC and Saturn status flags. Bits 7-1 of port $322 always
+ return one.
+
+ The Comms Link has two 8-bit latches which hold the byte being sent to
+ the PAR and the byte being read from the PAR. This means that neither the
+ PC or the PAR has to drive the data bus while waiting for the other one
+ to read the data being sent. This allows the PC to read the last byte
+ sent by the Saturn even if it's turned off.
+
+ Read and write accesses to the data port from the PC or Saturn side will
+ change the state of the status flags. The current flag settings determine
+ what their next state will be. Here's a table of the various flag actions:
+
+ Status flags   PC data port access     Saturn data port access
+ PC     SAT     Write       Read        Write       Read
+ ------------   ----------------------  --------------------------
+  0      0      .           PC=1        .           .
+  0      1      ?           ?           ?           ?
+  1      0      SAT=1       .           PC=0        .
+  1      1      .           .           PC=0/SAT=0  .
+
+ . = No effect
+ ? = Unknown
+
+ It isn't possible to only have the Saturn flag set, so I haven't documented
+ read/write operations for that case.
+
+ Also, the routines used to exchange bytes between the PC and PAR (described
+ later) never get to the point where the PC flag is set and the Saturn
+ writes to the data port to clear the PC flag. Because this isn't officially
+ relied on, having the PC flag cleared in this manner may not be consistent
+ between different versions of the Comms Link card.
+ 
+ The routines used to exchange data are as follows:
+
+ PC:                                Saturn:
+ Write byte to data port            Read status bit until busy == 1
+ Read status bit until busy == 0    Read byte from data port
+ Read byte from data port           Write byte to data port
+
+ ----------------------------------------------------------------------------
+ Miscellaneous
+ ----------------------------------------------------------------------------
+
+ I've found that using a XingA Comms Link card with an ARP cartridge and a
+ Blue Skeleton Sega Saturn can cause an unusual problem to manifest.
+ If the last byte written to the Comms Link data port has a few bits set,
+ then the Saturn will not boot if turned on. You can also see that the
+ power light is dim, not completely off, and it's brightness changes with
+ how many bits are set in total. The fix is to clear the Comms Link data
+ port beforehand, as the regular 'action.exe' software doesn't do this
+ when shutting down.
+
+ The Datel Comms Link card has a set of 6 unused jumpers. They connect one
+ of 6 interrupt request pins on the ISA bus to what is presumably an IRQ
+ output from the PAL20V8 chip.
+
+ Perhaps Datel originally planned to use interrupt-driven I/O instead of
+ having to manually poll the status register when communicating with
+ the Saturn. I don't know if this feature actually works or not, but
+ if somebody ever tries it, I'd like to hear about it. Here are the
+ interrupt assignments:
+
+ 1. Short top and bottom pins to use IRQ9    (Leftmost jumper)
+ 2. Short top and bottom pins to use IRQ3
+ 3. Short top and bottom pins to use IRQ4
+ 4. Short top and bottom pins to use IRQ5
+ 5. Short top and bottom pins to use IRQ6
+ 6. Short top and bottom pins to use IRQ7    (Rightmost jumper)
+
+ By default there are no pins shorted together, so none of the IRQ lines are
+ used. The EMS Comms Link is missing the jumpers altogether (there are holes
+ but no pins) and a resistor between the PAL and the jumpers is gone as well.
+
+ The entry point of the ARP cartridge is $02000100. It can be convenient to
+ have your program jump to this address when it quits, so you don't have to
+ reset the Saturn (and make the CD drive seek) every time a program is run.
+
+ The 'flashsat.bin' program that comes with the Datel or EMS upgrade software
+ is loaded into RAM and executed. It reads in the new ARP software and
+ programs the flash memory accordingly. This means that you have to have a
+ working cartridge to upgrade it, though it might be possible to make a
+ restoration program that ran from a CD. (providing your Saturn could read
+ a CD-R, which the unmodified versions can't do)
+
+ ----------------------------------------------------------------------------
+ Comms Link pinout
+ ----------------------------------------------------------------------------
+
+ Here's a pinout of the female DB25 connector on the comms link card.
+
+ Pin 1  - Busy flag (output from Comms Link to PAR)
+ Pin 2  - Data bit 0
+ Pin 3  - Data bit 1
+ Pin 4  - Data bit 2
+ Pin 5  - Data bit 3
+ Pin 6  - Data bit 4
+ Pin 7  - Data bit 5
+ Pin 8  - Data bit 6
+ Pin 9  - Data bit 7
+ Pin 10 - Identical to pin 1, but unused in the PAR cartridge.
+ Pin 11 - Busy flag (input to Comms Link from PAR)
+
+ Pins 12-13 are not used.
+ Pins 14-25 are all ground.
+
+ ----------------------------------------------------------------------------
+ Miscellaneous
+ ----------------------------------------------------------------------------
+
+ NCS has details about how to fix the early versions of the ARP cartridges
+ which have the wrong ID:
+
+ http://www.ncsx.com/ncs0330/ncs0413/jrnl0416.htm
+
+ I've performed this modification and it works. All of the 1MB and 4MB games
+ I've tested worked flawlessly. The only exception is Vampire Saviour, which
+ has missing graphics (reload the game again to fix this) and sometimes will
+ not boot. It seemed to actually work better with an unmodified cart, though
+ this would seem contrary to the description of the problem by NCS which
+ states Vampire Saviour will not work at all.
+
+ I've created some PAR codes that patch the cartridge detection routine in
+ a few games so they will always think they see a 4MB cartridge. This allows
+ you to use an unmodified ARP with 4MB games:
+
+ Final Fight Revenge (J)
+ 16011988:A004
+
+ Pocket Fighter (J)
+ 160383C0:015C
+
+ ----------------------------------------------------------------------------
+ Acknowlegements
+ ----------------------------------------------------------------------------
+
+ - Bart Trzynadlowski and James Forshaw for their Saturn related software
+   and documentation.
+ - Anders M. Montonen for his Saturn development website.
+ - G.T. for excellent support and being patient with my questions. :)
+ - Lan Kwei for the EMS 4-in-1 cartridge and Comms Link card.
+ - Datel for the original PAR and Comms Link card.
+ - Interact for distributing the GameShark.
+ - NCS for the modification instructions.
+
