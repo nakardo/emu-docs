@@ -1,4 +1,4 @@
-# emu-docs
+# [emu-docs](https://nakardo.github.io/emu-docs)
 
 This is an emu-docs.org dump from the web.archive.org. Content copyright belong
 to their respective owners. This repo was created for sake of preserving.
