@@ -11,5 +11,6 @@ do
     fi
 done
 
-REGEX="s~(href|src)=\"/\??(.*)~\1=\"/emu-docs/\2~g"
-find $WEBSITE_DIR -type f -name "*.html" -exec sed -i "" -E "$REGEX" {} +
+find $WEBSITE_DIR -type f -name "*.html" -exec sed -i "" -E \
+    -e "s~(href)=\"/\??(.*)~\1=\"/emu-docs/\2~g" \
+    -e "s~(src)=\"/\??(.*)~\1=\"/emu-docs/\2~g" {} \;
